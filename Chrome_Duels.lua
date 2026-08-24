@@ -1,6 +1,4 @@
--- [[ CHROME.VS DUELS — protected loader ]]
-local __chrome_result
-local __chrome_ok, __chrome_err = pcall(function()
+print("CHROME.VS FILE START")
 -- [[ CHROME.VS DUELS ]]
 
 local Players = game:GetService("Players")
@@ -9990,14 +9988,13 @@ end
 -- ============================================================
 -- INITIALIZATION (crash-proof)
 -- ============================================================
+print("CHROME.VS BOOT")
 pcall(function()
     if not game:IsLoaded() then game.Loaded:Wait() end
 end)
-
 pcall(function()
     if type(loadCherryConfig) == "function" then loadCherryConfig() end
 end)
-
 pcall(function()
     if type(CHERRY_THEMES) == "table" then
         if M._savedTheme and CHERRY_THEMES[M._savedTheme] then
@@ -10009,7 +10006,6 @@ pcall(function()
         end
     end
 end)
-
 pcall(function()
     if type(applyAccentFromTheme) == "function" then applyAccentFromTheme() end
 end)
@@ -10029,23 +10025,19 @@ do
         print("CHROME.VS — GUI ready")
     else
         warn("CHROME.VS — GUI error: " .. tostring(errGui))
+        print("CHROME.VS — GUI error: " .. tostring(errGui))
     end
 end
 
 task.spawn(function()
     pcall(function()
-        if M.applyStealBarTheme and UI_ACCENT then M.applyStealBarTheme(UI_ACCENT) end
-        if type(M.updateHeadTheme) == "function" then M.updateHeadTheme() end
-        if M.mainFrame and type(M.recolorBlacksToTheme) == "function" then M.recolorBlacksToTheme(M.mainFrame) end
-        if M.mobileButtonsEnabled and type(M.buildMobileButtons) == "function" then M.buildMobileButtons() end
-
         local function try(fn, ...)
-            if type(fn) == "function" then
-                return pcall(fn, ...)
-            end
-            return false
+            if type(fn) == "function" then pcall(fn, ...) end
         end
-
+        if M.applyStealBarTheme and UI_ACCENT then pcall(M.applyStealBarTheme, UI_ACCENT) end
+        try(M.updateHeadTheme)
+        if M.mainFrame then try(M.recolorBlacksToTheme, M.mainFrame) end
+        if M.mobileButtonsEnabled then try(M.buildMobileButtons) end
         if M.antiRagdollEnabled then try(M.startAntiRagdoll) end
         if M.hardHitEnabled then try(M.startHardHit) end
         if M.setHardHitVisual then try(M.setHardHitVisual, M.hardHitEnabled) end
@@ -10068,13 +10060,9 @@ task.spawn(function()
         if M.stretchRezEnabled then try(M.enableStretchRez) end
         if M.removeAccEnabled then try(M.startRemoveAcc) end
         if M.playerESPEnabled then try(M.toggleESP, true) end
-        if M.animPackEnabled and M.animPack and type(M.PACKS) == "table" and M.PACKS[M.animPack] then
-            try(M.applyAnimPack, M.animPack)
-        end
-        if (M.headlessEnabled or M.korbloxEnabled) and player.Character then
-            try(M.applyCharterToChar, player.Character)
-        end
-        if type(M.CandyApplyCustomSky) == "function" then try(M.CandyApplyCustomSky, M.currentSkyTheme) end
+        if M.animPackEnabled and M.animPack and type(M.PACKS)=="table" and M.PACKS[M.animPack] then try(M.applyAnimPack, M.animPack) end
+        if (M.headlessEnabled or M.korbloxEnabled) and player.Character then try(M.applyCharterToChar, player.Character) end
+        try(M.CandyApplyCustomSky, M.currentSkyTheme)
         if M.showPlayerSpeeds then try(M.togglePlayerSpeeds, true) end
         try(M.updateStatusRadius)
         try(M.startHeadSpeedUpdates)
@@ -10781,13 +10769,4 @@ pcall(function()
     if M.antiAntiDesyncEnabled and type(M.startAntiAntiDesync)=="function" then M.startAntiAntiDesync() end
 end)
 print("CHROME.VS DUELS loaded.")
-
-__chrome_result = M
-end)
-if not __chrome_ok then
-    warn("[CHROME.VS] LOAD ERROR: " .. tostring(__chrome_err))
-    print("[CHROME.VS] LOAD ERROR: " .. tostring(__chrome_err))
-else
-    print("CHROME.VS DUELS loaded.")
-end
-return __chrome_result
+return M
