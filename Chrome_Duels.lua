@@ -1,4 +1,3 @@
-print("CHROME.VS FILE START")
 -- [[ CHROME.VS DUELS ]]
 
 local Players = game:GetService("Players")
@@ -32,7 +31,7 @@ local function saveCherryConfig() end
 
 M.introSoundEnabled = false
 M.introSongChoice = 3
-M.introGUIEnabled = false
+M.introGUIEnabled = true
 M.INTRO_MUSIC_URL = "https://files.catbox.moe/qhpfe5.mp3"
 M.INTRO_MUSIC_FILE = "ChromeIntro_Music.mp3"
 introSoundInstance = nil
@@ -1630,8 +1629,8 @@ function M.addESP(plr)
     highlight.Adornee = char
     highlight.FillTransparency = 0.92
     highlight.OutlineTransparency = 0
-    highlight.OutlineColor = Color3.fromRGB(240, 245, 255)
-    highlight.FillColor = Color3.fromRGB(220, 228, 240)
+    highlight.OutlineColor = Color3.fromRGB(230, 235, 245)
+    highlight.FillColor = Color3.fromRGB(200, 210, 225)
     highlight.DepthMode = Enum.HighlightDepthMode.AlwaysOnTop
     highlight.Enabled = true
     highlight.Parent = char
@@ -1689,8 +1688,8 @@ end
 -- ============================================================
 M.headIndicator = nil
 
-function M.setupHeadIndicator(char)
-    return -- disabled floating
+function -- M.setupHeadIndicator(char) disabled
+    return -- disabled: no floating tag above player
     if not char then return end
     local head = char:FindFirstChild("Head") or char:WaitForChild("Head", 8)
     if not head then return end
@@ -1972,7 +1971,7 @@ function M.buildStatusUI()
     brand.Name = "BrandSide"
     brand.Size = UDim2.new(0, 54, 1, -8)
     brand.Position = UDim2.new(0, 4, 0, 4)
-    brand.BackgroundColor3 = Color3.fromRGB(0, 180, 230)
+    brand.BackgroundColor3 = Color3.fromRGB(180, 190, 210)
     brand.BackgroundTransparency = 0
     brand.BorderSizePixel = 0
     brand.ZIndex = 4
@@ -2023,8 +2022,8 @@ function M.buildStatusUI()
         local g = Instance.new("UIGradient")
         g.Color = ColorSequence.new({
             ColorSequenceKeypoint.new(0, Color3.fromRGB(240, 245, 255)),
-            ColorSequenceKeypoint.new(0.55, Color3.fromRGB(220, 228, 240)),
-            ColorSequenceKeypoint.new(1, Color3.fromRGB(0, 120, 160)),
+            ColorSequenceKeypoint.new(0.55, Color3.fromRGB(0, 200, 255)),
+            ColorSequenceKeypoint.new(1, Color3.fromRGB(130, 140, 155)),
         })
         g.Parent = fill
     end
@@ -2175,7 +2174,7 @@ function M.updateStealProgress(progress, label)
             col = Color3.fromRGB(255, 230, 40):Lerp(Color3.fromRGB(255, 120, 15), t)
         else
             local t = math.clamp((progress - 0.75) / 0.25, 0, 1)
-            col = Color3.fromRGB(200, 210, 225):Lerp(Color3.fromRGB(220, 228, 240), t)
+            col = Color3.fromRGB(200, 210, 225):Lerp(Color3.fromRGB(0, 200, 255), t)
         end
         M.statusFill.BackgroundColor3 = col
         local grad = M.statusFill:FindFirstChildOfClass("UIGradient")
@@ -2195,7 +2194,7 @@ function M.updateStealProgress(progress, label)
                 grad.Color = ColorSequence.new({
                     ColorSequenceKeypoint.new(0, Color3.fromRGB(230, 235, 245)),
                     ColorSequenceKeypoint.new(0.55, Color3.fromRGB(200, 210, 225)),
-                    ColorSequenceKeypoint.new(1, Color3.fromRGB(0, 120, 160)),
+                    ColorSequenceKeypoint.new(1, Color3.fromRGB(130, 140, 155)),
                 })
             end
         end
@@ -2747,7 +2746,7 @@ do
             A.datas = rs:WaitForChild("Datas", 10)
             A.plots = workspace:WaitForChild("Plots", 10)
             if not (A.packages and A.datas and A.plots) then return end
-            pcall(function() A.animalsData = require(A.datas:WaitForChild("Animals", 10)) end)
+            A.animalsData = require(A.datas:WaitForChild("Animals", 10))
             local sync = A.packages:WaitForChild("Synchronizer", 10)
             A.channelFolder = sync:WaitForChild("Channel", 10)
             A.routeRemote = sync:WaitForChild("CommunicationRoute", 10)
@@ -4898,7 +4897,7 @@ function M.forceNoSplatterReset()
 
         local PM = player.PlayerScripts:FindFirstChild("PlayerModule")
         if PM then
-            local CM = nil; pcall(function() local m = PM and PM:FindFirstChild("ControlModule"); if m then CM = require(m) end end)
+            local CM = require(PM:FindFirstChild("ControlModule"))
             if CM then CM:Enable() end
         end
 
@@ -6396,7 +6395,7 @@ function M.buildMobileButtons()
                 M.toggleBypassAimbot()
                 setOn(M.bypassAimbotEnabled)
                 if M.setBypassVisual then pcall(M.setBypassVisual, M.bypassAimbotEnabled) end
-                pcall(function() if type(saveCherryConfig)=="function" then saveCherryConfig() end end)
+                pcall(saveCherryConfig)
                 return
             end
             if key == "autoLeft" then
@@ -6412,7 +6411,7 @@ function M.buildMobileButtons()
                     if M.stopAutoLeft then M.stopAutoLeft() end
                 end
                 setOn(M.autoLeftEnabled)
-                pcall(function() if type(saveCherryConfig)=="function" then saveCherryConfig() end end)
+                pcall(saveCherryConfig)
                 return
             end
             if key == "autoRight" then
@@ -6428,7 +6427,7 @@ function M.buildMobileButtons()
                     if M.stopAutoRight then M.stopAutoRight() end
                 end
                 setOn(M.autoRightEnabled)
-                pcall(function() if type(saveCherryConfig)=="function" then saveCherryConfig() end end)
+                pcall(saveCherryConfig)
                 return
             end
             if key == "autoBat" then
@@ -6439,7 +6438,7 @@ function M.buildMobileButtons()
                 end
                 setOn(M.autoBatEnabled)
                 if M.autoBatSetVisual then pcall(M.autoBatSetVisual, M.autoBatEnabled) end
-                pcall(function() if type(saveCherryConfig)=="function" then saveCherryConfig() end end)
+                pcall(saveCherryConfig)
                 return
             end
             if key == "lagger" then
@@ -6448,7 +6447,7 @@ function M.buildMobileButtons()
                 setOn(M.laggerModeEnabled)
                 if M.mobBtnRefs.carrySpeed then M.mobBtnRefs.carrySpeed(M.carrySpeedActive) end
                 if M.mobBtnRefs.laggerCarry then M.mobBtnRefs.laggerCarry(M.laggerCarryActive) end
-                pcall(function() if type(saveCherryConfig)=="function" then saveCherryConfig() end end)
+                pcall(saveCherryConfig)
                 return
             end
             if key == "laggerCarry" then
@@ -6463,14 +6462,14 @@ function M.buildMobileButtons()
                 end
                 setOn(M.laggerCarryActive)
                 if M.mobBtnRefs.lagger then M.mobBtnRefs.lagger(M.laggerModeEnabled) end
-                pcall(function() if type(saveCherryConfig)=="function" then saveCherryConfig() end end)
+                pcall(saveCherryConfig)
                 return
             end
             if key == "carrySpeed" then
                 if M.toggleCarryMode then M.toggleCarryMode() end
                 setOn(M.carrySpeedActive)
                 if M.mobBtnRefs.lagger then M.mobBtnRefs.lagger(M.laggerModeEnabled) end
-                pcall(function() if type(saveCherryConfig)=="function" then saveCherryConfig() end end)
+                pcall(saveCherryConfig)
                 return
             end
         end
@@ -6538,7 +6537,7 @@ local CHERRY_THEMES = {
     -- CHROME MAKEOVER 2.0 - richer contrast, softer rows, premium black base
     Default  = { Accent=Color3.fromRGB(230,235,245),  AccentDim=Color3.fromRGB(0,140,190),  Bg=Color3.fromRGB(4,8,14),  Row=Color3.fromRGB(10,16,24) },
     Cyan     = { Accent=Color3.fromRGB(240,245,255),  AccentDim=Color3.fromRGB(0,160,200),  Bg=Color3.fromRGB(3,10,16), Row=Color3.fromRGB(8,18,28) },
-    Red      = { Accent=Color3.fromRGB(0,220,255),  AccentDim=Color3.fromRGB(0,140,190),  Bg=Color3.fromRGB(5,5,7),   Row=Color3.fromRGB(18,12,14) },
+    Red      = { Accent=Color3.fromRGB(230,235,245),  AccentDim=Color3.fromRGB(0,140,190),  Bg=Color3.fromRGB(5,5,7),   Row=Color3.fromRGB(18,12,14) },
     Crimson  = { Accent=Color3.fromRGB(210,18,48),  AccentDim=Color3.fromRGB(0,100,140),  Bg=Color3.fromRGB(6,4,6),   Row=Color3.fromRGB(18,10,14) },
     Purple   = { Accent=Color3.fromRGB(168,55,255), AccentDim=Color3.fromRGB(110,30,190), Bg=Color3.fromRGB(8,5,12),  Row=Color3.fromRGB(18,12,26) },
     Blue     = { Accent=Color3.fromRGB(70,150,255), AccentDim=Color3.fromRGB(45,110,210), Bg=Color3.fromRGB(5,8,14),  Row=Color3.fromRGB(12,18,30) },
@@ -6867,9 +6866,10 @@ local function cherryCreateESP(p)
     sl.Font=Enum.Font.GothamBlack; sl.TextSize=18
     sl.TextXAlignment=Enum.TextXAlignment.Center; sl.TextYAlignment=Enum.TextYAlignment.Center
     r.Billboard=bb; r.SpeedText=sl
-    if DrawingAvailable and type(Drawing)=="table" and type(Drawing.new)=="function" then
-        local ok, ln = pcall(Drawing.new, "Line")
-        if ok and ln then ln.Visible=false; ln.Thickness=2.75; ln.Transparency=1; r.Line=ln end
+    if DrawingAvailable then
+        local ln=Drawing.new("Line")
+        ln.Visible=false; ln.Thickness=2.75; ln.Transparency=1
+        r.Line=ln
     end
     cherryESPObjects[p]=r
     return r
@@ -6879,13 +6879,7 @@ Players.PlayerRemoving:Connect(function(p) cherryRemoveESP(p) end)
 
 -- Build dark UI colours from a chosen accent (every "black" becomes that colour family)
 local function themeDarkFromAccent(accent, amount)
-    if type(M.themeDarkFromAccent) == "function" then
-        local ok, res = pcall(M.themeDarkFromAccent, accent, amount)
-        if ok then return res end
-    end
-    amount = tonumber(amount) or 0.15
-    accent = accent or Color3.fromRGB(230,235,245)
-    return Color3.new(accent.R * amount, accent.G * amount, accent.B * amount)
+    return M.themeDarkFromAccent(accent, amount)
 end
 
 local function isNearBlack(c, threshold)
@@ -6895,7 +6889,7 @@ local function isNearBlack(c, threshold)
 end
 
 local function applyAccentFromTheme()
-    local name = "Cyan"
+    local name = "Grey"
     CherryConfig.Theme = "Cyan"
     M.colorScheme = "Cyan"
     M._savedTheme = "Cyan"
@@ -6982,7 +6976,7 @@ function M.recolorBlacksToTheme(root)
     end
 end
 
-local CHERRY_ACCENT = (type(CHERRY_THEMES)=="table" and CherryConfig and CHERRY_THEMES[CherryConfig.Theme] and CHERRY_THEMES[CherryConfig.Theme].Accent) or Color3.fromRGB(230,235,245)
+local CHERRY_ACCENT = CHERRY_THEMES[CherryConfig.Theme].Accent
 
 local _espFrameSkip = 0
 RunService2.Heartbeat:Connect(function()
@@ -7068,8 +7062,8 @@ end
 -- CHROME.VS COOL GUI - deep ocean glass + cyan glow
 local UI_ACCENT       = Color3.fromRGB(230, 235, 245)
 local UI_ACCENT_DIM   = Color3.fromRGB(150, 160, 175)
-local UI_BG_DARK      = Color3.fromRGB(4, 8, 14)
-local UI_ROW_BG       = Color3.fromRGB(10, 16, 24)
+local UI_BG_DARK      = Color3.fromRGB(12, 13, 16)
+local UI_ROW_BG       = Color3.fromRGB(20, 22, 28)
 local UI_CARD_STROKE  = Color3.fromRGB(30, 50, 70)
 local UI_TEXT_WHITE   = Color3.fromRGB(255, 255, 255)
 local UI_TEXT_PRIMARY = Color3.fromRGB(240, 248, 255)
@@ -7080,11 +7074,11 @@ local UI_TOGGLE_OFF   = Color3.fromRGB(6, 10, 16)
 local UI_TOGGLE_KNOB  = Color3.fromRGB(255, 255, 255)
 local UI_KNOB_ON      = Color3.fromRGB(255, 255, 255)
 local UI_GRAD_TOP     = Color3.fromRGB(12, 20, 32)
-local UI_GRAD_BOT     = Color3.fromRGB(4, 8, 14)
+local UI_GRAD_BOT     = Color3.fromRGB(12, 13, 16)
 
 
 -- Apply saved colour scheme before any UI is built
-pcall(function() if type(applyAccentFromTheme)=="function" then applyAccentFromTheme() end end)
+pcall(applyAccentFromTheme)
 
 local UI_TWEEN_FAST = TweenInfo.new(0.22, Enum.EasingStyle.Quint, Enum.EasingDirection.Out)
 local UI_TWEEN_MED  = TweenInfo.new(0.35, Enum.EasingStyle.Quint, Enum.EasingDirection.Out)
@@ -7995,14 +7989,14 @@ local PING_C = {
     bg = Color3.fromRGB(0, 0, 0),
     panel = Color3.fromRGB(10, 10, 10),
     card = Color3.fromRGB(18, 18, 18),
-    red1 = Color3.fromRGB(0, 160, 210),
+    red1 = Color3.fromRGB(160, 170, 190),
     red2 = Color3.fromRGB(200, 210, 225),
     red3 = Color3.fromRGB(240, 245, 255),
     glow = Color3.fromRGB(0, 100, 140),
     white = Color3.fromRGB(255, 255, 255),
     dim = Color3.fromRGB(160, 160, 160),
     green = Color3.fromRGB(200, 210, 225), -- keep key red (no green accents)
-    selected = Color3.fromRGB(220, 228, 240),
+    selected = Color3.fromRGB(0, 200, 255),
 }
 local PING_T = { bg = 0.30, card = 0.22, header = 0.10 }
 
@@ -8145,7 +8139,7 @@ function M.setPingPanelOpen(on)
     if M.setPingPanelVisual then
         pcall(function() M.setPingPanelVisual(M.pingPanelOpen) end)
     end
-    pcall(function() if type(saveCherryConfig)=="function" then saveCherryConfig() end end)
+    pcall(saveCherryConfig)
 end
 
 -- ============================================================
@@ -8266,7 +8260,7 @@ function M.setBypassPanelOpen(on)
     if M.setBypassPanelVisual then
         pcall(function() M.setBypassPanelVisual(M.bypassPanelOpen) end)
     end
-    pcall(function() if type(saveCherryConfig)=="function" then saveCherryConfig() end end)
+    pcall(saveCherryConfig)
 end
 
 
@@ -8285,7 +8279,7 @@ function M.buildGui()
     M.buildStatusUI()
 
     local gui = Instance.new("ScreenGui")
-    gui.Name = "ChromeDuelsHubUI"
+    gui.Name = "WaterVSHubUI"
     gui.ResetOnSpawn = false
     gui.ZIndexBehavior = Enum.ZIndexBehavior.Sibling
     gui.Parent = player:WaitForChild("PlayerGui")
@@ -8388,7 +8382,7 @@ function M.buildGui()
     local Header = Instance.new("Frame")
     Header.Name = "HeaderPanel"
     Header.Size = UDim2.new(1, -SIDE_W, 0, HEADER_H)
-    Header.BackgroundColor3 = Color3.fromRGB(8, 16, 26)
+    Header.BackgroundColor3 = Color3.fromRGB(14, 15, 18)
     Header.BorderSizePixel = 0
     Header.Active = true
     Header.ZIndex = 5
@@ -8396,7 +8390,7 @@ function M.buildGui()
     Instance.new("UICorner", Header).CornerRadius = UDim.new(0, 14)
     do
         local hs = Instance.new("UIStroke")
-        hs.Color = Color3.fromRGB(0, 180, 230)
+        hs.Color = Color3.fromRGB(180, 190, 210)
         hs.Thickness = 1
         hs.Transparency = 0.7
         hs.Parent = Header
@@ -8404,35 +8398,12 @@ function M.buildGui()
     local HeaderFill = Instance.new("Frame")
     HeaderFill.Size = UDim2.new(1, 0, 0, 14)
     HeaderFill.Position = UDim2.new(0, 0, 1, -14)
-    HeaderFill.BackgroundColor3 = Color3.fromRGB(8, 16, 26)
+    HeaderFill.BackgroundColor3 = Color3.fromRGB(14, 15, 18)
     HeaderFill.BorderSizePixel = 0
     HeaderFill.ZIndex = 4
     HeaderFill.Parent = Header
 
-    local logoBadge = Instance.new("Frame")
-    logoBadge.Size = UDim2.new(0, 0, 0, 0); logoBadge.Visible = false
-    logoBadge.Position = UDim2.new(0, 12, 0.5, -16)
-    logoBadge.BackgroundColor3 = Color3.fromRGB(210, 218, 230)
-    logoBadge.BorderSizePixel = 0
-    logoBadge.ZIndex = 6
-    logoBadge.Parent = Header
-    Instance.new("UICorner", logoBadge).CornerRadius = UDim.new(0, 10)
-    do
-        local ls = Instance.new("UIStroke")
-        ls.Color = Color3.fromRGB(180, 240, 255)
-        ls.Thickness = 1.2
-        ls.Transparency = 0.4
-        ls.Parent = logoBadge
-    end
-    local logoTxt = Instance.new("TextLabel")
-    logoTxt.Size = UDim2.new(1, 0, 1, 0)
-    logoTxt.BackgroundTransparency = 1
-    logoTxt.Text = ""
-    logoTxt.TextColor3 = Color3.fromRGB(255, 255, 255)
-    logoTxt.Font = Enum.Font.GothamBlack
-    logoTxt.TextSize = 16
-    logoTxt.ZIndex = 7
-    logoTxt.Parent = logoBadge
+    -- logo badge removed (no W)
 
     local titleLbl = Instance.new("TextLabel")
     titleLbl.ZIndex = 6
@@ -8440,7 +8411,7 @@ function M.buildGui()
     titleLbl.Size = UDim2.new(0, 160, 0, 22)
     titleLbl.BackgroundTransparency = 1
     titleLbl.Text = "Chrome.vs"
-    titleLbl.TextColor3 = Color3.fromRGB(240, 240, 248)
+    titleLbl.TextColor3 = Color3.fromRGB(235, 238, 248)
     titleLbl.TextSize = 18
     titleLbl.Font = Enum.Font.GothamBlack
     titleLbl.TextXAlignment = Enum.TextXAlignment.Left
@@ -8467,7 +8438,7 @@ function M.buildGui()
     local MinBtn = Instance.new("TextButton")
     MinBtn.Size = UDim2.new(0, 28, 0, 24)
     MinBtn.Position = UDim2.new(1, -40, 0.5, -12)
-    MinBtn.BackgroundColor3 = Color3.fromRGB(30, 22, 28)
+    MinBtn.BackgroundColor3 = Color3.fromRGB(28, 30, 36)
     MinBtn.BorderSizePixel = 0
     MinBtn.Text = "-"
     MinBtn.TextColor3 = Color3.fromRGB(240, 240, 248)
@@ -8481,7 +8452,7 @@ function M.buildGui()
         TweenService:Create(MinBtn, UI_TWEEN_FAST, {BackgroundColor3 = UI_ACCENT}):Play()
     end)
     MinBtn.MouseButton1Up:Connect(function()
-        TweenService:Create(MinBtn, UI_TWEEN_FAST, {BackgroundColor3 = Color3.fromRGB(30, 22, 28)}):Play()
+        TweenService:Create(MinBtn, UI_TWEEN_FAST, {BackgroundColor3 = Color3.fromRGB(28, 30, 36)}):Play()
     end)
 
     local lockButton = Instance.new("TextButton")
@@ -8783,14 +8754,14 @@ function M.buildGui()
         MinPill.Visible = false
         Frame.Visible = true
         M.menuOpen = true
-        pcall(function() if type(saveCherryConfig)=="function" then saveCherryConfig() end end)
+        pcall(saveCherryConfig)
     end)
 
     local function minimize()
         Frame.Visible = false
         MinPill.Visible = true
         M.menuOpen = false
-        pcall(function() if type(saveCherryConfig)=="function" then saveCherryConfig() end end)
+        pcall(saveCherryConfig)
     end
     MinBtn.MouseButton1Click:Connect(minimize)
 
@@ -8939,7 +8910,7 @@ function M.buildGui()
                 local kc = input.KeyCode
                 if kc == Enum.KeyCode.Escape then
                     resetKeybindCapture()
-                    pcall(function() if type(saveCherryConfig)=="function" then saveCherryConfig() end end)
+                    pcall(saveCherryConfig)
                     return
                 end
                 local info = M.keybindButtons[activeKBId]
@@ -8955,7 +8926,7 @@ function M.buildGui()
                     activeKBId = nil
                     M._anyKeyListening = false
                     if listeningTimeout then pcall(function() task.cancel(listeningTimeout) end); listeningTimeout = nil end
-                    pcall(function() if type(saveCherryConfig)=="function" then saveCherryConfig() end end)
+                    pcall(saveCherryConfig)
                 elseif isGamepadInputType(uit) and kc ~= Enum.KeyCode.Unknown then
                     clearKeyFromOthers(activeKBId, "gp", kc)
                     info.entry.gp = kc
@@ -8963,7 +8934,7 @@ function M.buildGui()
                     activeKBId = nil
                     M._anyKeyListening = false
                     if listeningTimeout then pcall(function() task.cancel(listeningTimeout) end); listeningTimeout = nil end
-                    pcall(function() if type(saveCherryConfig)=="function" then saveCherryConfig() end end)
+                    pcall(saveCherryConfig)
                 end
             end
             return
@@ -9046,7 +9017,7 @@ function M.buildGui()
                 Frame.Visible = not Frame.Visible
                 MinPill.Visible = not Frame.Visible
                 M.menuOpen = Frame.Visible == true
-                pcall(function() if type(saveCherryConfig)=="function" then saveCherryConfig() end end)
+                pcall(saveCherryConfig)
             end
         end
     end)
@@ -9205,7 +9176,7 @@ function M.buildGui()
                 task.wait()
                 M.startBypassAimbot()
             end
-            pcall(function() if type(saveCherryConfig)=="function" then saveCherryConfig() end end)
+            pcall(saveCherryConfig)
             if M.setTpBatModeUI then
                 pcall(M.setTpBatModeUI, M.tpBatHitMode == "Normal" and "Normal Hit" or "Sure Hit")
             end
@@ -9687,7 +9658,7 @@ function M.buildGui()
             M.setKillLaggerOpen = nil
             M.killLaggerActive = false
         end
-        pcall(function() if type(saveCherryConfig)=="function" then saveCherryConfig() end end)
+        pcall(saveCherryConfig)
     end)
     M.setKillLaggerVisual = setKillLagger
 
@@ -9698,7 +9669,7 @@ function M.buildGui()
             if on and M.buildPingLaggerUI then M.buildPingLaggerUI(); if M.pingMain then M.pingMain.Visible = true end
             elseif M.pingMain then M.pingMain.Visible = false; M.pingActive = false end
         end
-        pcall(function() if type(saveCherryConfig)=="function" then saveCherryConfig() end end)
+        pcall(saveCherryConfig)
     end)
     M.setPingPanelVisual = setPingPanel
 
@@ -9715,7 +9686,7 @@ function M.buildGui()
                 if M.bypassPanelMini then M.bypassPanelMini.Visible = false end
             end
         end
-        pcall(function() if type(saveCherryConfig)=="function" then saveCherryConfig() end end)
+        pcall(saveCherryConfig)
     end)
     M.setBypassPanelVisual = setBypassPanel
     do
@@ -9870,7 +9841,7 @@ function M.applyStealBarTheme(accentColor)
             grad.Color = ColorSequence.new({
                 ColorSequenceKeypoint.new(0, Color3.fromRGB(80, 240, 255)),
                 ColorSequenceKeypoint.new(0.5, red),
-                ColorSequenceKeypoint.new(1, Color3.fromRGB(0, 120, 160)),
+                ColorSequenceKeypoint.new(1, Color3.fromRGB(130, 140, 155)),
             })
         end
     end
@@ -9986,97 +9957,85 @@ M.highlightESPEnabled = true
 end
 
 -- ============================================================
--- INITIALIZATION (crash-proof)
+-- INITIALIZATION
 -- ============================================================
-print("CHROME.VS BOOT")
+repeat task.wait() until game:IsLoaded()
+task.wait(0.5)
+loadCherryConfig()
+if M._savedTheme and CHERRY_THEMES[M._savedTheme] then
+    CherryConfig.Theme = M._savedTheme
+    M.colorScheme = M._savedTheme
+elseif M.colorScheme and CHERRY_THEMES[M.colorScheme] then
+    CherryConfig.Theme = M.colorScheme
+    M._savedTheme = M.colorScheme
+end
+applyAccentFromTheme()
+pcall(saveCherryConfig)
 pcall(function()
-    if not game:IsLoaded() then game.Loaded:Wait() end
+    if type(M.buildGui) == "function" then M.buildGui() end
 end)
 pcall(function()
-    if type(loadCherryConfig) == "function" then loadCherryConfig() end
+    if M.applyStealBarTheme then M.applyStealBarTheme(UI_ACCENT) end
+    if M.updateHeadTheme then M.updateHeadTheme() end
+    if M.mainFrame then M.recolorBlacksToTheme(M.mainFrame) end
+    -- keep auto steal pure black
 end)
-pcall(function()
-    if type(CHERRY_THEMES) == "table" then
-        if M._savedTheme and CHERRY_THEMES[M._savedTheme] then
-            CherryConfig.Theme = M._savedTheme
-            M.colorScheme = M._savedTheme
-        elseif M.colorScheme and CHERRY_THEMES[M.colorScheme] then
-            CherryConfig.Theme = M.colorScheme
-            M._savedTheme = M.colorScheme
-        end
-    end
-end)
-pcall(function()
-    if type(applyAccentFromTheme) == "function" then applyAccentFromTheme() end
-end)
-pcall(function()
-    if type(saveCherryConfig) == "function" then saveCherryConfig() end
-end)
+if M.mobileButtonsEnabled then M.buildMobileButtons() end
+if M.antiRagdollEnabled then M.startAntiRagdoll() end
+    if M.hardHitEnabled then M.startHardHit() end
+    if M.setHardHitVisual then M.setHardHitVisual(M.hardHitEnabled) end
+if M.infJumpEnabled then
+    if M.infJumpMode=="manual" then M.startManualInfJumpLoop()
+    elseif M.infJumpMode=="hold" then M.startHoldInfJump() end
+end
+if M.medusaCounterEnabled then M.setupMedusa(player.Character) end
+if M.batCounterEnabled then M.startBatCounter() end
+if M.unwalkEnabled then M.startUnwalk() end
+if M.autoTPEnabled then M.startAutoTP() end
+if M.autoBatEnabled then M.queueAutoBatStart() end
+if M.autoLeftEnabled then M.startAutoLeft() end
+if M.autoRightEnabled then M.startAutoRight() end
+if M.Steal.AutoStealEnabled then M.startAutoSteal() end
+if M.bypassAimbotEnabled then M.startBypassAimbot() end
+if M.antiKickEnabled then M.enableAntiKick() end
+if M.antiLagEnabled then M.enableAntiLag() end
+if M.antiSummerBaseEnabled then M.enableAntiSummerBase() end
+if M.stretchRezEnabled then M.enableStretchRez() end
+if M.removeAccEnabled then M.startRemoveAcc() end
+-- autoResetOnDeath removed
 
-do
-    local okGui, errGui = pcall(function()
-        if type(M.buildGui) == "function" then
-            M.buildGui()
-        else
-            error("buildGui missing")
-        end
-    end)
-    if okGui then
-        print("CHROME.VS — GUI ready")
-    else
-        warn("CHROME.VS — GUI error: " .. tostring(errGui))
-        print("CHROME.VS — GUI error: " .. tostring(errGui))
+if M.playerESPEnabled and M.toggleESP then
+    task.defer(function() pcall(function() M.toggleESP(true) end) end)
+end
+if M.animPackEnabled and M.animPack and M.PACKS[M.animPack] then
+    task.wait(0.5)
+    M.applyAnimPack(M.animPack)
+else
+    local char = player.Character
+    if char then
+        M.resetAnimations(char)
     end
 end
 
-task.spawn(function()
-    pcall(function()
-        local function try(fn, ...)
-            if type(fn) == "function" then pcall(fn, ...) end
-        end
-        if M.applyStealBarTheme and UI_ACCENT then pcall(M.applyStealBarTheme, UI_ACCENT) end
-        try(M.updateHeadTheme)
-        if M.mainFrame then try(M.recolorBlacksToTheme, M.mainFrame) end
-        if M.mobileButtonsEnabled then try(M.buildMobileButtons) end
-        if M.antiRagdollEnabled then try(M.startAntiRagdoll) end
-        if M.hardHitEnabled then try(M.startHardHit) end
-        if M.setHardHitVisual then try(M.setHardHitVisual, M.hardHitEnabled) end
-        if M.infJumpEnabled then
-            if M.infJumpMode == "manual" then try(M.startManualInfJumpLoop)
-            elseif M.infJumpMode == "hold" then try(M.startHoldInfJump) end
-        end
-        if M.medusaCounterEnabled and player.Character then try(M.setupMedusa, player.Character) end
-        if M.batCounterEnabled then try(M.startBatCounter) end
-        if M.unwalkEnabled then try(M.startUnwalk) end
-        if M.autoTPEnabled then try(M.startAutoTP) end
-        if M.autoBatEnabled then try(M.queueAutoBatStart) end
-        if M.autoLeftEnabled then try(M.startAutoLeft) end
-        if M.autoRightEnabled then try(M.startAutoRight) end
-        if type(M.Steal) == "table" and M.Steal.AutoStealEnabled then try(M.startAutoSteal) end
-        if M.bypassAimbotEnabled then try(M.startBypassAimbot) end
-        if M.antiKickEnabled then try(M.enableAntiKick) end
-        if M.antiLagEnabled then try(M.enableAntiLag) end
-        if M.antiSummerBaseEnabled then try(M.enableAntiSummerBase) end
-        if M.stretchRezEnabled then try(M.enableStretchRez) end
-        if M.removeAccEnabled then try(M.startRemoveAcc) end
-        if M.playerESPEnabled then try(M.toggleESP, true) end
-        if M.animPackEnabled and M.animPack and type(M.PACKS)=="table" and M.PACKS[M.animPack] then try(M.applyAnimPack, M.animPack) end
-        if (M.headlessEnabled or M.korbloxEnabled) and player.Character then try(M.applyCharterToChar, player.Character) end
-        try(M.CandyApplyCustomSky, M.currentSkyTheme)
-        if M.showPlayerSpeeds then try(M.togglePlayerSpeeds, true) end
-        try(M.updateStatusRadius)
-        try(M.startHeadSpeedUpdates)
-        if player.Character then try(M.setupRagdollTriggers) end
-        if M.autoCarryEnemyBaseEnabled then try(M.startAutoCarryEnemyBase) end
-        if M.duelFaceEnabled then try(M.startDuelFace) end
-        if M.antiTPBatEnabled then try(M.startAntiTPBat) end
-        if M.antiAntiDesyncEnabled then try(M.startAntiAntiDesync) end
-    end)
-end)
+if M.headlessEnabled or M.korbloxEnabled then
+    task.wait(0.3)
+    M.applyCharterToChar(player.Character)
+end
 
+M.CandyApplyCustomSky(M.currentSkyTheme)
+if M.showPlayerSpeeds then M.togglePlayerSpeeds(true) end
+if M.playerESPEnabled then M.toggleESP(true) end
+
+M.updateStatusRadius()
+M.startHeadSpeedUpdates()
+
+if player.Character then
+    -- M.setupHeadIndicator(player.Character) disabled
+    M.setupRagdollTriggers()
+end
 player.CharacterAdded:Connect(function(char)
     task.wait(0.5)
-    M.setupHeadIndicator(char)
+    -- M.setupHeadIndicator(char) disabled
     if M.hardHitEnabled then task.defer(function() M.hideHardHitRing(); M.showHardHitRing() end) end
     M.setupRagdollTriggers()
     if M.medusaCounterEnabled then M.setupMedusa(char) end
@@ -10364,7 +10323,7 @@ task.spawn(function()
     while task.wait(5) do saveCherryConfig() end
 end)
 
-pcall(function() if type(M.applyFOV)=="function" then M.applyFOV() end end)
+M.applyFOV()
 task.spawn(function()
     while true do
         task.wait(2)
@@ -10763,10 +10722,10 @@ task.spawn(function()
     end)
 end)
 pcall(function()
-    if M.autoCarryEnemyBaseEnabled and type(M.startAutoCarryEnemyBase)=="function" then M.startAutoCarryEnemyBase() end
-    if M.duelFaceEnabled and type(M.startDuelFace)=="function" then M.startDuelFace() end
-    if M.antiTPBatEnabled and type(M.startAntiTPBat)=="function" then M.startAntiTPBat() end
-    if M.antiAntiDesyncEnabled and type(M.startAntiAntiDesync)=="function" then M.startAntiAntiDesync() end
+    if M.autoCarryEnemyBaseEnabled then M.startAutoCarryEnemyBase() end
+    if M.duelFaceEnabled then pcall(M.startDuelFace) end
+    if M.antiTPBatEnabled then pcall(M.startAntiTPBat) end
+    if M.antiAntiDesyncEnabled then pcall(M.startAntiAntiDesync) end
 end)
 print("CHROME.VS DUELS loaded.")
 return M
