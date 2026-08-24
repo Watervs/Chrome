@@ -8541,16 +8541,63 @@ function M.buildGui()
     avatarCircle.Name = "AvatarCircle"
     avatarCircle.Size = UDim2.new(0, 52, 0, 52)
     avatarCircle.Position = UDim2.new(0.5, -26, 0, 4)
-    -- solid red circle with CHROME (no player avatar)
-    avatarCircle.BackgroundColor3 = Color3.fromRGB(0, 200, 245)
+    avatarCircle.BackgroundColor3 = Color3.fromRGB(20, 22, 28)
     avatarCircle.BorderSizePixel = 0
+    avatarCircle.ClipsDescendants = true
     avatarCircle.ZIndex = 8
     avatarCircle.Parent = sideBottom
     Instance.new("UICorner", avatarCircle).CornerRadius = UDim.new(1, 0)
     local avStroke = Instance.new("UIStroke", avatarCircle)
-    avStroke.Color = Color3.fromRGB(255, 255, 255)
+    avStroke.Color = Color3.fromRGB(230, 235, 245)
     avStroke.Thickness = 1.5
     avStroke.Transparency = 0.25
+
+    -- Background image fills the circle
+    local avBg = Instance.new("ImageLabel")
+    avBg.Name = "CircleBgImage"
+    avBg.Size = UDim2.fromScale(1, 1)
+    avBg.BackgroundTransparency = 1
+    avBg.ScaleType = Enum.ScaleType.Crop
+    avBg.ZIndex = 8
+    avBg.Parent = avatarCircle
+    Instance.new("UICorner", avBg).CornerRadius = UDim.new(1, 0)
+    do
+        local img = nil
+        pcall(function()
+            if M.customBgAsset then
+                img = M.customBgAsset
+            elseif type(isfile) == "function" and isfile(M.CUSTOM_BG_FILE) and getcustomasset then
+                img = getcustomasset(M.CUSTOM_BG_FILE)
+                M.customBgAsset = img
+            end
+        end)
+        if not img then
+            -- fallback to configured rbx asset / default bg id
+            local id = tonumber(M.customBgId) or tonumber(M.DEFAULT_BG_ID)
+            if id and id > 0 then
+                img = "rbxassetid://" .. tostring(id)
+            end
+        end
+        if img then
+            avBg.Image = img
+            avBg.ImageTransparency = 0.05
+        else
+            avBg.Image = ""
+            avatarCircle.BackgroundColor3 = Color3.fromRGB(200, 210, 225)
+        end
+        M._sideCircleBg = avBg
+        -- if download finishes later, refresh circle image
+        task.spawn(function()
+            for _ = 1, 20 do
+                if M.customBgAsset and avBg and avBg.Parent then
+                    avBg.Image = M.customBgAsset
+                    avBg.ImageTransparency = 0.05
+                    break
+                end
+                task.wait(0.25)
+            end
+        end)
+    end
 
     local avatarLbl = Instance.new("TextLabel")
     avatarLbl.Name = "AvatarChrome"
@@ -8559,7 +8606,9 @@ function M.buildGui()
     avatarLbl.Text = "C.VS"
     avatarLbl.TextColor3 = Color3.fromRGB(255, 255, 255)
     avatarLbl.Font = Enum.Font.GothamBlack
-    avatarLbl.TextSize = 12
+    avatarLbl.TextSize = 11
+    avatarLbl.TextStrokeTransparency = 0.4
+    avatarLbl.TextStrokeColor3 = Color3.fromRGB(0, 0, 0)
     avatarLbl.ZIndex = 9
     avatarLbl.Parent = avatarCircle
 
