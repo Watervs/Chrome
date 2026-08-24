@@ -1,7 +1,3 @@
--- [[ CHROME.VS DUELS ]]
--- Clean rebrand · Semi/V2 Steal (75% stop) · Auto Switch Carry · Nice UI + BG Switcher
--- Removed: Bypass, Ping Lagger, Kill Lagger
-
 local Players = game:GetService("Players")
 local TweenService = game:GetService("TweenService")
 local UIS = game:GetService("UserInputService")
