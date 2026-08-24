@@ -591,7 +591,7 @@ function M.attachChromeTorsoChip(char)
             pcall(function() c:Destroy() end)
         end
     end
-    -- Billboard always faces camera → visible from all sides
+    -- Billboard always faces camera -> visible from all sides
     local bb = Instance.new("BillboardGui")
     bb.Name = "ChromeTorsoChipBB"
     bb:SetAttribute("ChromeChip", true)
@@ -710,7 +710,7 @@ function M.applyChromeBlackSkin(char)
     end)
 end
 
--- VYNC SKIN toggle — asset 116358759349760
+-- VYNC SKIN toggle - asset 116358759349760
 M.VYNC_SKIN_ID = 116358759349760
 M.vyncSkinEnabled = false
 
@@ -1912,7 +1912,7 @@ function M.buildStatusUI()
         end
     end
 
-    -- CHROME MAKEOVER — sleek bottom steal bar
+    -- CHROME MAKEOVER - sleek bottom steal bar
     local barW = math.clamp(tonumber(M.stealBarSize) or 460, 280, 720)
     local barH = 36
 
@@ -1965,7 +1965,7 @@ function M.buildStatusUI()
         end
     end
 
-    -- LEFT brand chip (CHROME) — sharper red pill
+    -- LEFT brand chip (CHROME) - sharper red pill
     local brand = Instance.new("Frame")
     brand.Name = "BrandSide"
     brand.Size = UDim2.new(0, 54, 1, -8)
@@ -2071,7 +2071,7 @@ function M.buildStatusUI()
     M.statusBarPctLbl = stealLbl
     M.statusPctLbl = stealLbl
 
-    -- RIGHT side pieces (mode + fps) — black outer
+    -- RIGHT side pieces (mode + fps) - black outer
     local rightSide = Instance.new("Frame")
     rightSide.Name = "RightSide"
     rightSide.Size = UDim2.new(0, 120, 1, -8)
@@ -2164,7 +2164,7 @@ function M.updateStealProgress(progress, label)
     local pct = math.floor(progress * 100 + 0.5)
     if M.statusFill then
         M.statusFill.Size = UDim2.new(progress, 0, 1, 0)
-        -- Stage colors: 0–50% white → 50–75% yellow/orange → 75%+ red
+        -- Stage colors: 0-50% white -> 50-75% yellow/orange -> 75%+ red
         local col
         if progress < 0.5 then
             col = Color3.fromRGB(255, 255, 255)
@@ -2444,7 +2444,7 @@ function M.stopNormalSteal()
 end
 
 -- ============================================================
--- V2 AUTO-STEAL (from CHROME — pause at 75%, finish when close)
+-- V2 AUTO-STEAL (from CHROME - pause at 75%, finish when close)
 -- ============================================================
 do
     local V2 = M.V2 or {}
@@ -2499,7 +2499,7 @@ do
             return root and targetPart and targetPart.Parent and (root.Position - targetPart.Position).Magnitude <= radius
         end
         local function isCloseEnoughToGrab()
-            -- While auto left/right pathing, don't require tight range — steal must continue
+            -- While auto left/right pathing, don't require tight range - steal must continue
             if M.autoLeftEnabled or M.autoRightEnabled then
                 return isTargetInCurrentRadius()
             end
@@ -3233,7 +3233,7 @@ function M.onAnchorChanged(part)
     return part:GetPropertyChangedSignal("Anchored"):Connect(function()
         if not part.Anchored then return end
         if M._isInstaResetting then return end
-        -- Medusa Reset / insta-reset removed — only counter remains
+        -- Medusa Reset / insta-reset removed - only counter remains
         if M.medusaCounterEnabled and part.Transparency == 1 then
             pcall(function() M.useMedusaCounter() end)
         end
@@ -3798,7 +3798,7 @@ function M.swingCurrentBatAimbot(char)
 end
 
 -- ============================================================
--- BAT TP (Green Duels V2 style – hard CFrame TP + camera + dual swing loops)
+-- BAT TP (Green Duels V2 style - hard CFrame TP + camera + dual swing loops)
 -- ============================================================
 M._bypassTarget = nil
 M._bypassHRP = nil
@@ -3838,7 +3838,7 @@ function M._bypassFindBat()
     return nil
 end
 
--- Sure Hit — auto-swing multi-fire
+-- Sure Hit - auto-swing multi-fire
 function M._bypassTryHitBat()
     if M.tpBatAutoSwing == false and M.autoSwingEnabled == false then return end
     if M._sureHitCD then return end
@@ -3858,7 +3858,7 @@ function M._bypassTryHitBat()
     task.delay(0.045, function() M._sureHitCD = false end)
 end
 
--- Normal Hit — auto-swing multi-fire
+-- Normal Hit - auto-swing multi-fire
 function M._bypassTryHitBatNormal()
     if M.tpBatAutoSwing == false and M.autoSwingEnabled == false then return end
     if M._normalHitCD then return end
@@ -4005,7 +4005,7 @@ function M._bypassProtectCharacter(char)
     if M._bypassGodDiedConn then pcall(function() M._bypassGodDiedConn:Disconnect() end) end
     M._bypassGodDiedConn = hum.Died:Connect(function()
         if not M.bypassAimbotEnabled then return end
-        -- NO insta reset — only try to stay alive client-side
+        -- NO insta reset - only try to stay alive client-side
         pcall(function()
             hum.BreakJointsOnDeath = false
             hum.Health = hum.MaxHealth or 100
@@ -4163,7 +4163,7 @@ function M.startAntiDie()
             pcall(function()
                 hum.BreakJointsOnDeath = false
                 hum.Died:Connect(function()
-                    -- stay alive attempt only — no reset
+                    -- stay alive attempt only - no reset
                     pcall(function()
                         hum.Health = hum.MaxHealth or 100
                         hum:ChangeState(Enum.HumanoidStateType.Running)
@@ -4193,7 +4193,7 @@ function M.stopAntiDie()
 end
 
 -- ============================================================
--- ANTI FLING / GLITCH DIE (global — not only aimbot)
+-- ANTI FLING / GLITCH DIE (global - not only aimbot)
 -- Caps insane physics that often cause random death
 -- ============================================================
 M.antiFlingEnabled = true -- always default ON (stops fling deaths)
@@ -4419,7 +4419,7 @@ function M.startBypassAimbot()
     local hitMode = (M.tpBatHitMode == "Normal") and "Normal" or "Sure"
 
     if hitMode == "Sure" then
-        -- SURE HIT — camera/shiftlock aware (does NOT hard-lock camera)
+        -- SURE HIT - camera/shiftlock aware (does NOT hard-lock camera)
         M.bypassAimbotConn = RunService.Heartbeat:Connect(function()
             if not M.bypassAimbotEnabled then return end
             local char = player.Character
@@ -4456,7 +4456,7 @@ function M.startBypassAimbot()
             M._bypassTryHitBat()
         end)
     else
-        -- NORMAL HIT — same camera-aware placement
+        -- NORMAL HIT - same camera-aware placement
         M.bypassAimbotConn = RunService.Heartbeat:Connect(function()
             if not M.bypassAimbotEnabled then return end
             local char = player.Character
@@ -4570,7 +4570,7 @@ function M.doAutoTPDown(force)
     if not hrp then return end
     local hum2 = char:FindFirstChildOfClass("Humanoid")
     if not hum2 then return end
-    -- auto-TP loop only checks height/air; manual TP Down (force) always works — no cooldown
+    -- auto-TP loop only checks height/air; manual TP Down (force) always works - no cooldown
     if not force then
         if hum2.FloorMaterial ~= Enum.Material.Air then return end
         if not (hrp.Position.Y >= (tonumber(M.autoTPHeight) or 20)) then return end
@@ -4621,12 +4621,12 @@ end
 M.wideViewFOV = 120
 
 --------------------------------------------------------------------------------
--- ANTI SUMMER BASE (ONLY remove blocking Anchor parts — never wipe bases)
+-- ANTI SUMMER BASE (ONLY remove blocking Anchor parts - never wipe bases)
 --------------------------------------------------------------------------------
 function M.isSummerBaseName(name)
     if not name then return false end
     local n = tostring(name):lower()
-    -- strict: only explicit summer base names (not beach/palm/prop — those kill enemy bases)
+    -- strict: only explicit summer base names (not beach/palm/prop - those kill enemy bases)
     return n == "summerbase"
         or n == "summer_base"
         or n:find("summerbase", 1, true) ~= nil
@@ -4660,7 +4660,7 @@ function M.cleanSummerBaseAnchors()
     local plots = workspace:FindFirstChild("Plots")
     if not plots then return end
 
-    -- Only scan Plots (not whole workspace — was causing lag + wiping bases)
+    -- Only scan Plots (not whole workspace - was causing lag + wiping bases)
     for _, plot in ipairs(plots:GetChildren()) do
         local isSummer = M.isSummerBaseName(plot.Name)
         if not isSummer then
@@ -4805,7 +4805,7 @@ end
 
 function M.applyAntiLagDerender(obj)
     if not obj then return end
-    -- NEVER touch enemy/player bases (Plots) — was making them transparent
+    -- NEVER touch enemy/player bases (Plots) - was making them transparent
     if M._isUnderPlots(obj) then return end
     pcall(function()
         if obj:IsA("Accessory") or obj:IsA("Hat") then
@@ -4818,7 +4818,7 @@ function M.applyAntiLagDerender(obj)
             or obj:IsA("Fire") or obj:IsA("Smoke") or obj:IsA("Sparkles") then
             obj.Enabled = false
         elseif obj:IsA("BasePart") or obj:IsA("MeshPart") then
-            -- light optim only — do NOT force Transparency / wipe textures
+            -- light optim only - do NOT force Transparency / wipe textures
             obj.CastShadow = false
             if obj.Reflectance and obj.Reflectance > 0 then
                 obj.Reflectance = 0
@@ -6503,7 +6503,7 @@ function M.buildMobileButtons()
             if movedEnough then
                 if M.saveBtnPositions then pcall(M.saveBtnPositions) end
             elseif wasPressed and not movedEnough then
-                -- no time-window cooldown — any short tap fires
+                -- no time-window cooldown - any short tap fires
                 fireAction()
             end
             wasPressed = false
@@ -6533,7 +6533,7 @@ end
 local CHERRY_CONFIG_NAME = "CherryConfig.json"
 local CherryConfig = { Theme="Default" }
 local CHERRY_THEMES = {
-    -- CHROME MAKEOVER 2.0 — richer contrast, softer rows, premium black base
+    -- CHROME MAKEOVER 2.0 - richer contrast, softer rows, premium black base
     Default  = { Accent=Color3.fromRGB(0,210,255),  AccentDim=Color3.fromRGB(0,140,190),  Bg=Color3.fromRGB(4,8,14),  Row=Color3.fromRGB(10,16,24) },
     Cyan     = { Accent=Color3.fromRGB(0,230,255),  AccentDim=Color3.fromRGB(0,160,200),  Bg=Color3.fromRGB(3,10,16), Row=Color3.fromRGB(8,18,28) },
     Red      = { Accent=Color3.fromRGB(0,220,255),  AccentDim=Color3.fromRGB(0,140,190),  Bg=Color3.fromRGB(5,5,7),   Row=Color3.fromRGB(18,12,14) },
@@ -7055,10 +7055,10 @@ function M.makeNumberCallback(tbl,key,min,max)
 end
 
 -- ============================================================
--- Chrome DUELS UI (ORIZZONTALE TABS + MENU PIÙ BASSO)
+-- Chrome DUELS UI (ORIZZONTALE TABS + MENU PIU BASSO)
 -- ============================================================
 
--- CHROME.VS COOL GUI — deep ocean glass + cyan glow
+-- CHROME.VS COOL GUI - deep ocean glass + cyan glow
 local UI_ACCENT       = Color3.fromRGB(0, 210, 255)
 local UI_ACCENT_DIM   = Color3.fromRGB(0, 140, 190)
 local UI_BG_DARK      = Color3.fromRGB(4, 8, 14)
@@ -7082,7 +7082,7 @@ pcall(applyAccentFromTheme)
 local UI_TWEEN_FAST = TweenInfo.new(0.22, Enum.EasingStyle.Quint, Enum.EasingDirection.Out)
 local UI_TWEEN_MED  = TweenInfo.new(0.35, Enum.EasingStyle.Quint, Enum.EasingDirection.Out)
 
--- UI STYLE HELPERS — ocean glass cards with cyan edge
+-- UI STYLE HELPERS - ocean glass cards with cyan edge
 local function uiCardStyle(f)
     local c = Instance.new("UICorner"); c.CornerRadius = UDim.new(0, 11); c.Parent = f
     local s = Instance.new("UIStroke"); s.Thickness = 1.2; s.Color = UI_ACCENT or Color3.fromRGB(0,210,255)
@@ -7345,7 +7345,7 @@ local function uiExpandToggleRow(parent, label, on, options, defaultIndex, onTog
     arrow.BackgroundColor3 = Color3.fromRGB(0, 0, 0)
     arrow.BackgroundTransparency = 0.1
     arrow.BorderSizePixel = 0
-    arrow.Text = "▼"
+    arrow.Text = "v"
     arrow.TextColor3 = Color3.fromRGB(255, 255, 255)
     arrow.TextSize = 14
     arrow.Font = Enum.Font.GothamBlack
@@ -7500,7 +7500,7 @@ local function uiExpandToggleRow(parent, label, on, options, defaultIndex, onTog
     local function setExpanded(v)
         expanded = v
         optFrame.Visible = v
-        arrow.Text = v and "▲" or "▼"
+        arrow.Text = v and "^" or "v"
         refreshModeSettings()
     end
 
@@ -7713,7 +7713,7 @@ function M.openImagePicker(kind)
     close.Size = UDim2.new(0, 24, 0, 24)
     close.Position = UDim2.new(1, -30, 0, 6)
     close.BackgroundTransparency = 1
-    close.Text = "×"
+    close.Text = "x"
     close.TextColor3 = Color3.fromRGB(30, 30, 30)
     close.Font = Enum.Font.GothamBold
     close.TextSize = 18
@@ -8254,7 +8254,7 @@ function M.setBypassPanelOpen(on)
     end
     if not M.bypassPanelOpen then
         -- keep spam if active? turn off when panel closed for safety
-        -- user may want it running in background — leave active state
+        -- user may want it running in background - leave active state
     end
     if M.setBypassPanelVisual then
         pcall(function() M.setBypassPanelVisual(M.bypassPanelOpen) end)
@@ -8462,7 +8462,7 @@ function M.buildGui()
     MinBtn.Position = UDim2.new(1, -40, 0.5, -12)
     MinBtn.BackgroundColor3 = Color3.fromRGB(30, 22, 28)
     MinBtn.BorderSizePixel = 0
-    MinBtn.Text = "−"
+    MinBtn.Text = "-"
     MinBtn.TextColor3 = Color3.fromRGB(240, 240, 248)
     MinBtn.TextSize = 16
     MinBtn.Font = Enum.Font.GothamBold
@@ -8713,7 +8713,7 @@ function M.buildGui()
             Frame.BackgroundTransparency = 0
         end)
     end
-    -- Coach-style open bar (pill) — CHROME branding
+    -- Coach-style open bar (pill) - CHROME branding
     local MinPill = Instance.new("Frame")
     MinPill.Name = "MiniFrame"
     MinPill.Visible = false
@@ -8815,7 +8815,7 @@ function M.buildGui()
     -- KEYBIND CAPTURE
     M._anyKeyListening = false
     -- ============================================================
-    -- KEYBINDS (stable id map — no shared refs / no stacked connections)
+    -- KEYBINDS (stable id map - no shared refs / no stacked connections)
     -- ============================================================
     local activeKBId = nil
     local listeningTimeout = nil
@@ -8967,7 +8967,7 @@ function M.buildGui()
         local kc = input.KeyCode
         if kc == Enum.KeyCode.Unknown then return end
 
-        -- One key → one action (elseif chain)
+        -- One key -> one action (elseif chain)
         if kbMatch(M.KB.LaggerToggle, kc) then
             local now = tick()
             if not M._lastLaggerBindPress or now - M._lastLaggerBindPress > 0.15 then
@@ -9097,7 +9097,7 @@ function M.buildGui()
     end)
     M.autoCarryEnemyBaseRangeBox = acbRangeBox
     uiSectionHeader(PM, "LAGGER")
-    -- Lagger: auto switch — no brainrot = Normal, holding = Carry
+    -- Lagger: auto switch - no brainrot = Normal, holding = Carry
     local _, lsBox = uiNumberRow(PM, "Lagger Normal", M.LAGGER_SPEED, 1, 500, function(v) M.LAGGER_SPEED = v; saveCherryConfig() end)
     local _, lcBox = uiNumberRow(PM, "Lagger Carry (STE)", M.LAGGER_CARRY_SPEED, 1, 500, function(v) M.LAGGER_CARRY_SPEED = v; saveCherryConfig() end)
     M.laggerBox = lsBox
@@ -10080,7 +10080,7 @@ player.CharacterAdded:Connect(function(char)
     end
 end)
 
--- Lightweight no-collide (no GetDescendants every frame — avoids lag/ping spikes)
+-- Lightweight no-collide (no GetDescendants every frame - avoids lag/ping spikes)
 do
     local _ncAcc = 0
     RunService.Heartbeat:Connect(function(dt)
@@ -10406,7 +10406,7 @@ function M.playIntro()
     end
 
     -- ============================================================
-    -- CHROME DUELS INTRO (Chrome.VS-style) — fixed song, ~4 seconds
+    -- CHROME DUELS INTRO (Chrome.VS-style) - fixed song, ~4 seconds
     -- ============================================================
     local TweenService = game:GetService("TweenService")
     local SoundService = game:GetService("SoundService")
