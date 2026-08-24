@@ -1,3 +1,6 @@
+-- [[ CHROME.VS DUELS — protected loader ]]
+local __chrome_result
+local __chrome_ok, __chrome_err = pcall(function()
 -- [[ CHROME.VS DUELS ]]
 
 local Players = game:GetService("Players")
@@ -2746,7 +2749,7 @@ do
             A.datas = rs:WaitForChild("Datas", 10)
             A.plots = workspace:WaitForChild("Plots", 10)
             if not (A.packages and A.datas and A.plots) then return end
-            A.animalsData = require(A.datas:WaitForChild("Animals", 10))
+            pcall(function() A.animalsData = require(A.datas:WaitForChild("Animals", 10)) end)
             local sync = A.packages:WaitForChild("Synchronizer", 10)
             A.channelFolder = sync:WaitForChild("Channel", 10)
             A.routeRemote = sync:WaitForChild("CommunicationRoute", 10)
@@ -4897,7 +4900,7 @@ function M.forceNoSplatterReset()
 
         local PM = player.PlayerScripts:FindFirstChild("PlayerModule")
         if PM then
-            local CM = nil; pcall(function() local m=PM:FindFirstChild("ControlModule"); if m then CM=require(m) end end)
+            local CM = nil; pcall(function() local m = PM and PM:FindFirstChild("ControlModule"); if m then CM = require(m) end end)
             if CM then CM:Enable() end
         end
 
@@ -6395,7 +6398,7 @@ function M.buildMobileButtons()
                 M.toggleBypassAimbot()
                 setOn(M.bypassAimbotEnabled)
                 if M.setBypassVisual then pcall(M.setBypassVisual, M.bypassAimbotEnabled) end
-                pcall(saveCherryConfig)
+                pcall(function() if type(saveCherryConfig)=="function" then saveCherryConfig() end end)
                 return
             end
             if key == "autoLeft" then
@@ -6411,7 +6414,7 @@ function M.buildMobileButtons()
                     if M.stopAutoLeft then M.stopAutoLeft() end
                 end
                 setOn(M.autoLeftEnabled)
-                pcall(saveCherryConfig)
+                pcall(function() if type(saveCherryConfig)=="function" then saveCherryConfig() end end)
                 return
             end
             if key == "autoRight" then
@@ -6427,7 +6430,7 @@ function M.buildMobileButtons()
                     if M.stopAutoRight then M.stopAutoRight() end
                 end
                 setOn(M.autoRightEnabled)
-                pcall(saveCherryConfig)
+                pcall(function() if type(saveCherryConfig)=="function" then saveCherryConfig() end end)
                 return
             end
             if key == "autoBat" then
@@ -6438,7 +6441,7 @@ function M.buildMobileButtons()
                 end
                 setOn(M.autoBatEnabled)
                 if M.autoBatSetVisual then pcall(M.autoBatSetVisual, M.autoBatEnabled) end
-                pcall(saveCherryConfig)
+                pcall(function() if type(saveCherryConfig)=="function" then saveCherryConfig() end end)
                 return
             end
             if key == "lagger" then
@@ -6447,7 +6450,7 @@ function M.buildMobileButtons()
                 setOn(M.laggerModeEnabled)
                 if M.mobBtnRefs.carrySpeed then M.mobBtnRefs.carrySpeed(M.carrySpeedActive) end
                 if M.mobBtnRefs.laggerCarry then M.mobBtnRefs.laggerCarry(M.laggerCarryActive) end
-                pcall(saveCherryConfig)
+                pcall(function() if type(saveCherryConfig)=="function" then saveCherryConfig() end end)
                 return
             end
             if key == "laggerCarry" then
@@ -6462,14 +6465,14 @@ function M.buildMobileButtons()
                 end
                 setOn(M.laggerCarryActive)
                 if M.mobBtnRefs.lagger then M.mobBtnRefs.lagger(M.laggerModeEnabled) end
-                pcall(saveCherryConfig)
+                pcall(function() if type(saveCherryConfig)=="function" then saveCherryConfig() end end)
                 return
             end
             if key == "carrySpeed" then
                 if M.toggleCarryMode then M.toggleCarryMode() end
                 setOn(M.carrySpeedActive)
                 if M.mobBtnRefs.lagger then M.mobBtnRefs.lagger(M.laggerModeEnabled) end
-                pcall(saveCherryConfig)
+                pcall(function() if type(saveCherryConfig)=="function" then saveCherryConfig() end end)
                 return
             end
         end
@@ -6822,7 +6825,7 @@ M.saveConfig = saveCherryConfig
 -- ============================================================
 -- CHERRY ESP
 -- ============================================================
-local RunService2 = game:GetService("RunService") or RunService
+local RunService2 = game:GetService("RunService")
 local cherryESPState = { LineESP=false, SpeedESP=false, HighlightESP=true }
 local cherryESPObjects = {}
 local DrawingAvailable = false
@@ -6866,12 +6869,9 @@ local function cherryCreateESP(p)
     sl.Font=Enum.Font.GothamBlack; sl.TextSize=18
     sl.TextXAlignment=Enum.TextXAlignment.Center; sl.TextYAlignment=Enum.TextYAlignment.Center
     r.Billboard=bb; r.SpeedText=sl
-    if DrawingAvailable and Drawing and type(Drawing.new)=="function" then
-        local ok, ln = pcall(function() return Drawing.new("Line") end)
-        if ok and ln then
-            ln.Visible=false; ln.Thickness=2.75; ln.Transparency=1
-            r.Line=ln
-        end
+    if DrawingAvailable and type(Drawing)=="table" and type(Drawing.new)=="function" then
+        local ok, ln = pcall(Drawing.new, "Line")
+        if ok and ln then ln.Visible=false; ln.Thickness=2.75; ln.Transparency=1; r.Line=ln end
     end
     cherryESPObjects[p]=r
     return r
@@ -6882,9 +6882,10 @@ Players.PlayerRemoving:Connect(function(p) cherryRemoveESP(p) end)
 -- Build dark UI colours from a chosen accent (every "black" becomes that colour family)
 local function themeDarkFromAccent(accent, amount)
     if type(M.themeDarkFromAccent) == "function" then
-        return M.themeDarkFromAccent(accent, amount)
+        local ok, res = pcall(M.themeDarkFromAccent, accent, amount)
+        if ok then return res end
     end
-    amount = amount or 0.15
+    amount = tonumber(amount) or 0.15
     accent = accent or Color3.fromRGB(230,235,245)
     return Color3.new(accent.R * amount, accent.G * amount, accent.B * amount)
 end
@@ -6983,9 +6984,7 @@ function M.recolorBlacksToTheme(root)
     end
 end
 
-local CHERRY_ACCENT = (CHERRY_THEMES[CherryConfig.Theme] and CHERRY_THEMES[CherryConfig.Theme].Accent)
-    or (CHERRY_THEMES.Default and CHERRY_THEMES.Default.Accent)
-    or Color3.fromRGB(230, 235, 245)
+local CHERRY_ACCENT = (type(CHERRY_THEMES)=="table" and CherryConfig and CHERRY_THEMES[CherryConfig.Theme] and CHERRY_THEMES[CherryConfig.Theme].Accent) or Color3.fromRGB(230,235,245)
 
 local _espFrameSkip = 0
 RunService2.Heartbeat:Connect(function()
@@ -7087,7 +7086,7 @@ local UI_GRAD_BOT     = Color3.fromRGB(4, 8, 14)
 
 
 -- Apply saved colour scheme before any UI is built
-pcall(applyAccentFromTheme)
+pcall(function() if type(applyAccentFromTheme)=="function" then applyAccentFromTheme() end end)
 
 local UI_TWEEN_FAST = TweenInfo.new(0.22, Enum.EasingStyle.Quint, Enum.EasingDirection.Out)
 local UI_TWEEN_MED  = TweenInfo.new(0.35, Enum.EasingStyle.Quint, Enum.EasingDirection.Out)
@@ -8148,7 +8147,7 @@ function M.setPingPanelOpen(on)
     if M.setPingPanelVisual then
         pcall(function() M.setPingPanelVisual(M.pingPanelOpen) end)
     end
-    pcall(saveCherryConfig)
+    pcall(function() if type(saveCherryConfig)=="function" then saveCherryConfig() end end)
 end
 
 -- ============================================================
@@ -8269,7 +8268,7 @@ function M.setBypassPanelOpen(on)
     if M.setBypassPanelVisual then
         pcall(function() M.setBypassPanelVisual(M.bypassPanelOpen) end)
     end
-    pcall(saveCherryConfig)
+    pcall(function() if type(saveCherryConfig)=="function" then saveCherryConfig() end end)
 end
 
 
@@ -8786,14 +8785,14 @@ function M.buildGui()
         MinPill.Visible = false
         Frame.Visible = true
         M.menuOpen = true
-        pcall(saveCherryConfig)
+        pcall(function() if type(saveCherryConfig)=="function" then saveCherryConfig() end end)
     end)
 
     local function minimize()
         Frame.Visible = false
         MinPill.Visible = true
         M.menuOpen = false
-        pcall(saveCherryConfig)
+        pcall(function() if type(saveCherryConfig)=="function" then saveCherryConfig() end end)
     end
     MinBtn.MouseButton1Click:Connect(minimize)
 
@@ -8942,7 +8941,7 @@ function M.buildGui()
                 local kc = input.KeyCode
                 if kc == Enum.KeyCode.Escape then
                     resetKeybindCapture()
-                    pcall(saveCherryConfig)
+                    pcall(function() if type(saveCherryConfig)=="function" then saveCherryConfig() end end)
                     return
                 end
                 local info = M.keybindButtons[activeKBId]
@@ -8958,7 +8957,7 @@ function M.buildGui()
                     activeKBId = nil
                     M._anyKeyListening = false
                     if listeningTimeout then pcall(function() task.cancel(listeningTimeout) end); listeningTimeout = nil end
-                    pcall(saveCherryConfig)
+                    pcall(function() if type(saveCherryConfig)=="function" then saveCherryConfig() end end)
                 elseif isGamepadInputType(uit) and kc ~= Enum.KeyCode.Unknown then
                     clearKeyFromOthers(activeKBId, "gp", kc)
                     info.entry.gp = kc
@@ -8966,7 +8965,7 @@ function M.buildGui()
                     activeKBId = nil
                     M._anyKeyListening = false
                     if listeningTimeout then pcall(function() task.cancel(listeningTimeout) end); listeningTimeout = nil end
-                    pcall(saveCherryConfig)
+                    pcall(function() if type(saveCherryConfig)=="function" then saveCherryConfig() end end)
                 end
             end
             return
@@ -9049,7 +9048,7 @@ function M.buildGui()
                 Frame.Visible = not Frame.Visible
                 MinPill.Visible = not Frame.Visible
                 M.menuOpen = Frame.Visible == true
-                pcall(saveCherryConfig)
+                pcall(function() if type(saveCherryConfig)=="function" then saveCherryConfig() end end)
             end
         end
     end)
@@ -9208,7 +9207,7 @@ function M.buildGui()
                 task.wait()
                 M.startBypassAimbot()
             end
-            pcall(saveCherryConfig)
+            pcall(function() if type(saveCherryConfig)=="function" then saveCherryConfig() end end)
             if M.setTpBatModeUI then
                 pcall(M.setTpBatModeUI, M.tpBatHitMode == "Normal" and "Normal Hit" or "Sure Hit")
             end
@@ -9690,7 +9689,7 @@ function M.buildGui()
             M.setKillLaggerOpen = nil
             M.killLaggerActive = false
         end
-        pcall(saveCherryConfig)
+        pcall(function() if type(saveCherryConfig)=="function" then saveCherryConfig() end end)
     end)
     M.setKillLaggerVisual = setKillLagger
 
@@ -9701,7 +9700,7 @@ function M.buildGui()
             if on and M.buildPingLaggerUI then M.buildPingLaggerUI(); if M.pingMain then M.pingMain.Visible = true end
             elseif M.pingMain then M.pingMain.Visible = false; M.pingActive = false end
         end
-        pcall(saveCherryConfig)
+        pcall(function() if type(saveCherryConfig)=="function" then saveCherryConfig() end end)
     end)
     M.setPingPanelVisual = setPingPanel
 
@@ -9718,7 +9717,7 @@ function M.buildGui()
                 if M.bypassPanelMini then M.bypassPanelMini.Visible = false end
             end
         end
-        pcall(saveCherryConfig)
+        pcall(function() if type(saveCherryConfig)=="function" then saveCherryConfig() end end)
     end)
     M.setBypassPanelVisual = setBypassPanel
     do
@@ -10000,12 +9999,14 @@ pcall(function()
 end)
 
 pcall(function()
-    if M._savedTheme and CHERRY_THEMES and CHERRY_THEMES[M._savedTheme] then
-        CherryConfig.Theme = M._savedTheme
-        M.colorScheme = M._savedTheme
-    elseif M.colorScheme and CHERRY_THEMES and CHERRY_THEMES[M.colorScheme] then
-        CherryConfig.Theme = M.colorScheme
-        M._savedTheme = M.colorScheme
+    if type(CHERRY_THEMES) == "table" then
+        if M._savedTheme and CHERRY_THEMES[M._savedTheme] then
+            CherryConfig.Theme = M._savedTheme
+            M.colorScheme = M._savedTheme
+        elseif M.colorScheme and CHERRY_THEMES[M.colorScheme] then
+            CherryConfig.Theme = M.colorScheme
+            M._savedTheme = M.colorScheme
+        end
     end
 end)
 
@@ -10016,13 +10017,19 @@ pcall(function()
     if type(saveCherryConfig) == "function" then saveCherryConfig() end
 end)
 
-local okGui, errGui = pcall(function()
-    if type(M.buildGui) == "function" then M.buildGui() end
-end)
-if okGui then
-    print("CHROME.VS — GUI ready")
-else
-    warn("CHROME.VS — GUI error: ", tostring(errGui))
+do
+    local okGui, errGui = pcall(function()
+        if type(M.buildGui) == "function" then
+            M.buildGui()
+        else
+            error("buildGui missing")
+        end
+    end)
+    if okGui then
+        print("CHROME.VS — GUI ready")
+    else
+        warn("CHROME.VS — GUI error: " .. tostring(errGui))
+    end
 end
 
 task.spawn(function()
@@ -10032,40 +10039,50 @@ task.spawn(function()
         if M.mainFrame and type(M.recolorBlacksToTheme) == "function" then M.recolorBlacksToTheme(M.mainFrame) end
         if M.mobileButtonsEnabled and type(M.buildMobileButtons) == "function" then M.buildMobileButtons() end
 
-        local function try(fn)
-            if type(fn) == "function" then pcall(fn) end
+        local function try(fn, ...)
+            if type(fn) == "function" then
+                return pcall(fn, ...)
+            end
+            return false
         end
+
         if M.antiRagdollEnabled then try(M.startAntiRagdoll) end
         if M.hardHitEnabled then try(M.startHardHit) end
-        if M.setHardHitVisual then pcall(function() M.setHardHitVisual(M.hardHitEnabled) end) end
+        if M.setHardHitVisual then try(M.setHardHitVisual, M.hardHitEnabled) end
         if M.infJumpEnabled then
             if M.infJumpMode == "manual" then try(M.startManualInfJumpLoop)
             elseif M.infJumpMode == "hold" then try(M.startHoldInfJump) end
         end
-        if M.medusaCounterEnabled and player.Character then pcall(function() M.setupMedusa(player.Character) end) end
+        if M.medusaCounterEnabled and player.Character then try(M.setupMedusa, player.Character) end
         if M.batCounterEnabled then try(M.startBatCounter) end
         if M.unwalkEnabled then try(M.startUnwalk) end
         if M.autoTPEnabled then try(M.startAutoTP) end
         if M.autoBatEnabled then try(M.queueAutoBatStart) end
         if M.autoLeftEnabled then try(M.startAutoLeft) end
         if M.autoRightEnabled then try(M.startAutoRight) end
-        if M.Steal and M.Steal.AutoStealEnabled then try(M.startAutoSteal) end
+        if type(M.Steal) == "table" and M.Steal.AutoStealEnabled then try(M.startAutoSteal) end
         if M.bypassAimbotEnabled then try(M.startBypassAimbot) end
         if M.antiKickEnabled then try(M.enableAntiKick) end
         if M.antiLagEnabled then try(M.enableAntiLag) end
         if M.antiSummerBaseEnabled then try(M.enableAntiSummerBase) end
         if M.stretchRezEnabled then try(M.enableStretchRez) end
         if M.removeAccEnabled then try(M.startRemoveAcc) end
-        if M.playerESPEnabled and type(M.toggleESP) == "function" then pcall(function() M.toggleESP(true) end) end
-        if M.animPackEnabled and M.animPack and M.PACKS and M.PACKS[M.animPack] then try(function() M.applyAnimPack(M.animPack) end) end
-        if (M.headlessEnabled or M.korbloxEnabled) and player.Character and type(M.applyCharterToChar)=="function" then
-            pcall(function() M.applyCharterToChar(player.Character) end)
+        if M.playerESPEnabled then try(M.toggleESP, true) end
+        if M.animPackEnabled and M.animPack and type(M.PACKS) == "table" and M.PACKS[M.animPack] then
+            try(M.applyAnimPack, M.animPack)
         end
-        if type(M.CandyApplyCustomSky) == "function" then pcall(function() M.CandyApplyCustomSky(M.currentSkyTheme) end) end
-        if M.showPlayerSpeeds and type(M.togglePlayerSpeeds)=="function" then pcall(function() M.togglePlayerSpeeds(true) end) end
-        if type(M.updateStatusRadius)=="function" then pcall(M.updateStatusRadius) end
-        if type(M.startHeadSpeedUpdates)=="function" then pcall(M.startHeadSpeedUpdates) end
-        if player.Character and type(M.setupRagdollTriggers)=="function" then pcall(M.setupRagdollTriggers) end
+        if (M.headlessEnabled or M.korbloxEnabled) and player.Character then
+            try(M.applyCharterToChar, player.Character)
+        end
+        if type(M.CandyApplyCustomSky) == "function" then try(M.CandyApplyCustomSky, M.currentSkyTheme) end
+        if M.showPlayerSpeeds then try(M.togglePlayerSpeeds, true) end
+        try(M.updateStatusRadius)
+        try(M.startHeadSpeedUpdates)
+        if player.Character then try(M.setupRagdollTriggers) end
+        if M.autoCarryEnemyBaseEnabled then try(M.startAutoCarryEnemyBase) end
+        if M.duelFaceEnabled then try(M.startDuelFace) end
+        if M.antiTPBatEnabled then try(M.startAntiTPBat) end
+        if M.antiAntiDesyncEnabled then try(M.startAntiAntiDesync) end
     end)
 end)
 
@@ -10764,4 +10781,13 @@ pcall(function()
     if M.antiAntiDesyncEnabled and type(M.startAntiAntiDesync)=="function" then M.startAntiAntiDesync() end
 end)
 print("CHROME.VS DUELS loaded.")
-return M
+
+__chrome_result = M
+end)
+if not __chrome_ok then
+    warn("[CHROME.VS] LOAD ERROR: " .. tostring(__chrome_err))
+    print("[CHROME.VS] LOAD ERROR: " .. tostring(__chrome_err))
+else
+    print("CHROME.VS DUELS loaded.")
+end
+return __chrome_result
