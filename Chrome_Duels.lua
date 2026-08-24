@@ -606,7 +606,7 @@ function M.attachChromeTorsoChip(char)
     chip.Name = "Chip"
     chip:SetAttribute("ChromeChip", true)
     chip.Size = UDim2.new(1, 0, 1, 0)
-    chip.BackgroundColor3 = Color3.fromRGB(0, 200, 245)
+    chip.BackgroundColor3 = Color3.fromRGB(200, 210, 225)
     chip.BorderSizePixel = 0
     chip.Parent = bb
     Instance.new("UICorner", chip).CornerRadius = UDim.new(0, 8)
@@ -638,7 +638,7 @@ function M.attachChromeTorsoChip(char)
         local f = Instance.new("Frame")
         f.Size = UDim2.new(0.55, 0, 0.28, 0)
         f.Position = UDim2.new(0.225, 0, 0.36, 0)
-        f.BackgroundColor3 = Color3.fromRGB(0, 200, 245)
+        f.BackgroundColor3 = Color3.fromRGB(200, 210, 225)
         f.BorderSizePixel = 0
         f.Parent = sg
         Instance.new("UICorner", f).CornerRadius = UDim.new(0, 6)
@@ -1170,7 +1170,7 @@ M._autoSwitchWasSteal = false
 M.MOB_POS_FILE = "moveeduels_btnpos.json"
 function M.themeDarkFromAccent(accent, amount)
     amount = math.clamp(tonumber(amount) or 0.12, 0, 1)
-    if typeof(accent) ~= "Color3" then accent = Color3.fromRGB(0, 220, 255) end
+    if typeof(accent) ~= "Color3" then accent = Color3.fromRGB(230, 235, 245) end
     return Color3.new(
         math.clamp(accent.R * amount, 0, 1),
         math.clamp(accent.G * amount, 0, 1),
@@ -1569,8 +1569,8 @@ function M.addESP(plr)
     -- Large circular avatar billboard above enemy
     local avatarBB = Instance.new("BillboardGui")
     avatarBB.Name = "ChromeEnemyAvatar"
-    avatarBB.Size = UDim2.new(0, 90, 0, 90)
-    avatarBB.StudsOffset = Vector3.new(0, 3.6, 0)
+    avatarBB.Size = UDim2.new(0, 34, 0, 34)
+    avatarBB.StudsOffset = Vector3.new(0, 2.5, 0)
     avatarBB.AlwaysOnTop = true
     avatarBB.MaxDistance = 500
     avatarBB.Adornee = head
@@ -1578,7 +1578,7 @@ function M.addESP(plr)
 
     local ring = Instance.new("Frame")
     ring.Size = UDim2.new(1, 0, 1, 0)
-    ring.BackgroundColor3 = Color3.fromRGB(0, 200, 245)
+    ring.BackgroundColor3 = Color3.fromRGB(200, 210, 225)
     ring.BorderSizePixel = 0
     ring.Parent = avatarBB
     Instance.new("UICorner", ring).CornerRadius = UDim.new(1, 0)
@@ -1609,8 +1609,8 @@ function M.addESP(plr)
     end)
 
     local nameBB = Instance.new("BillboardGui")
-    nameBB.Size = UDim2.new(0, 140, 0, 22)
-    nameBB.StudsOffset = Vector3.new(0, 5.4, 0)
+    nameBB.Size = UDim2.new(0, 72, 0, 12)
+    nameBB.StudsOffset = Vector3.new(0, 3.5, 0)
     nameBB.AlwaysOnTop = true
     nameBB.Adornee = head
     nameBB.Parent = head
@@ -1629,8 +1629,8 @@ function M.addESP(plr)
     highlight.Adornee = char
     highlight.FillTransparency = 0.92
     highlight.OutlineTransparency = 0
-    highlight.OutlineColor = Color3.fromRGB(0, 230, 255)
-    highlight.FillColor = Color3.fromRGB(0, 200, 255)
+    highlight.OutlineColor = Color3.fromRGB(230, 235, 245)
+    highlight.FillColor = Color3.fromRGB(200, 210, 225)
     highlight.DepthMode = Enum.HighlightDepthMode.AlwaysOnTop
     highlight.Enabled = true
     highlight.Parent = char
@@ -1688,7 +1688,8 @@ end
 -- ============================================================
 M.headIndicator = nil
 
-function M.setupHeadIndicator(char)
+function -- M.setupHeadIndicator(char) disabled
+    return -- disabled: no floating tag above player
     if not char then return end
     local head = char:FindFirstChild("Head") or char:WaitForChild("Head", 8)
     if not head then return end
@@ -1706,7 +1707,7 @@ function M.setupHeadIndicator(char)
     bb.Adornee = head
     bb.Parent = head
 
-    local red = Color3.fromRGB(0, 220, 255)
+    local red = Color3.fromRGB(230, 235, 245)
     local black = Color3.fromRGB(0, 0, 0)
 
     local discordLbl = Instance.new("TextLabel")
@@ -1778,7 +1779,7 @@ end
 
 function M.updateHeadTheme()
     if not M.headIndicator then return end
-    local red = Color3.fromRGB(0, 220, 255)
+    local red = Color3.fromRGB(230, 235, 245)
     local black = Color3.fromRGB(0, 0, 0)
     if M.headIndicator.discord then
         M.headIndicator.discord.TextColor3 = Color3.fromRGB(255, 255, 255)
@@ -1939,7 +1940,7 @@ function M.buildStatusUI()
     do
         local st = Instance.new("UIStroke")
         st.Name = "BarContour"
-        st.Color = Color3.fromRGB(0, 210, 255)
+        st.Color = Color3.fromRGB(230, 235, 245)
         st.Thickness = 1.4
         st.Transparency = 0.45
         st.Parent = frame
@@ -1970,7 +1971,7 @@ function M.buildStatusUI()
     brand.Name = "BrandSide"
     brand.Size = UDim2.new(0, 54, 1, -8)
     brand.Position = UDim2.new(0, 4, 0, 4)
-    brand.BackgroundColor3 = Color3.fromRGB(0, 180, 230)
+    brand.BackgroundColor3 = Color3.fromRGB(180, 190, 210)
     brand.BackgroundTransparency = 0
     brand.BorderSizePixel = 0
     brand.ZIndex = 4
@@ -2012,7 +2013,7 @@ function M.buildStatusUI()
     local fill = Instance.new("Frame")
     fill.Name = "Fill"
     fill.Size = UDim2.new(0, 0, 1, 0)
-    fill.BackgroundColor3 = Color3.fromRGB(0, 220, 255)
+    fill.BackgroundColor3 = Color3.fromRGB(230, 235, 245)
     fill.BorderSizePixel = 0
     fill.ZIndex = 5
     fill.Parent = track
@@ -2020,9 +2021,9 @@ function M.buildStatusUI()
     do
         local g = Instance.new("UIGradient")
         g.Color = ColorSequence.new({
-            ColorSequenceKeypoint.new(0, Color3.fromRGB(0, 230, 255)),
+            ColorSequenceKeypoint.new(0, Color3.fromRGB(240, 245, 255)),
             ColorSequenceKeypoint.new(0.55, Color3.fromRGB(0, 200, 255)),
-            ColorSequenceKeypoint.new(1, Color3.fromRGB(0, 120, 160)),
+            ColorSequenceKeypoint.new(1, Color3.fromRGB(130, 140, 155)),
         })
         g.Parent = fill
     end
@@ -2173,7 +2174,7 @@ function M.updateStealProgress(progress, label)
             col = Color3.fromRGB(255, 230, 40):Lerp(Color3.fromRGB(255, 120, 15), t)
         else
             local t = math.clamp((progress - 0.75) / 0.25, 0, 1)
-            col = Color3.fromRGB(0, 200, 245):Lerp(Color3.fromRGB(0, 200, 255), t)
+            col = Color3.fromRGB(200, 210, 225):Lerp(Color3.fromRGB(0, 200, 255), t)
         end
         M.statusFill.BackgroundColor3 = col
         local grad = M.statusFill:FindFirstChildOfClass("UIGradient")
@@ -2191,9 +2192,9 @@ function M.updateStealProgress(progress, label)
                 })
             else
                 grad.Color = ColorSequence.new({
-                    ColorSequenceKeypoint.new(0, Color3.fromRGB(0, 220, 255)),
-                    ColorSequenceKeypoint.new(0.55, Color3.fromRGB(0, 200, 245)),
-                    ColorSequenceKeypoint.new(1, Color3.fromRGB(0, 120, 160)),
+                    ColorSequenceKeypoint.new(0, Color3.fromRGB(230, 235, 245)),
+                    ColorSequenceKeypoint.new(0.55, Color3.fromRGB(200, 210, 225)),
+                    ColorSequenceKeypoint.new(1, Color3.fromRGB(130, 140, 155)),
                 })
             end
         end
@@ -6159,7 +6160,7 @@ end
 -- Apply chosen UI colour + bg image tint to live mobile buttons
 function M.refreshMobileButtonTheme()
     if not M.mobGuiRef or not M.mobGuiRef.Parent then return end
-    local accent = UI_ACCENT or CHERRY_ACCENT or Color3.fromRGB(0, 220, 255)
+    local accent = UI_ACCENT or CHERRY_ACCENT or Color3.fromRGB(230, 235, 245)
     local dim = UI_ACCENT_DIM or accent:Lerp(Color3.new(0,0,0), 0.4)
     local offTop = M.themeDarkFromAccent(accent, 0.28)
     local offBot = M.themeDarkFromAccent(accent, 0.10)
@@ -6252,7 +6253,7 @@ function M.buildMobileButtons()
     M.mobBtnFrames = {}
 
     -- Chrome colours: off = black/white, on = red/white
-    local accent = UI_ACCENT or Color3.fromRGB(0, 220, 255)
+    local accent = UI_ACCENT or Color3.fromRGB(230, 235, 245)
     local C = {
         stackBg = Color3.fromRGB(0, 0, 0),
         stackBrd = Color3.fromRGB(40, 40, 40),
@@ -6534,9 +6535,9 @@ local CHERRY_CONFIG_NAME = "CherryConfig.json"
 local CherryConfig = { Theme="Default" }
 local CHERRY_THEMES = {
     -- CHROME MAKEOVER 2.0 - richer contrast, softer rows, premium black base
-    Default  = { Accent=Color3.fromRGB(0,210,255),  AccentDim=Color3.fromRGB(0,140,190),  Bg=Color3.fromRGB(4,8,14),  Row=Color3.fromRGB(10,16,24) },
-    Cyan     = { Accent=Color3.fromRGB(0,230,255),  AccentDim=Color3.fromRGB(0,160,200),  Bg=Color3.fromRGB(3,10,16), Row=Color3.fromRGB(8,18,28) },
-    Red      = { Accent=Color3.fromRGB(0,220,255),  AccentDim=Color3.fromRGB(0,140,190),  Bg=Color3.fromRGB(5,5,7),   Row=Color3.fromRGB(18,12,14) },
+    Default  = { Accent=Color3.fromRGB(230,235,245),  AccentDim=Color3.fromRGB(0,140,190),  Bg=Color3.fromRGB(4,8,14),  Row=Color3.fromRGB(10,16,24) },
+    Cyan     = { Accent=Color3.fromRGB(240,245,255),  AccentDim=Color3.fromRGB(0,160,200),  Bg=Color3.fromRGB(3,10,16), Row=Color3.fromRGB(8,18,28) },
+    Red      = { Accent=Color3.fromRGB(230,235,245),  AccentDim=Color3.fromRGB(0,140,190),  Bg=Color3.fromRGB(5,5,7),   Row=Color3.fromRGB(18,12,14) },
     Crimson  = { Accent=Color3.fromRGB(210,18,48),  AccentDim=Color3.fromRGB(0,100,140),  Bg=Color3.fromRGB(6,4,6),   Row=Color3.fromRGB(18,10,14) },
     Purple   = { Accent=Color3.fromRGB(168,55,255), AccentDim=Color3.fromRGB(110,30,190), Bg=Color3.fromRGB(8,5,12),  Row=Color3.fromRGB(18,12,26) },
     Blue     = { Accent=Color3.fromRGB(70,150,255), AccentDim=Color3.fromRGB(45,110,210), Bg=Color3.fromRGB(5,8,14),  Row=Color3.fromRGB(12,18,30) },
@@ -6850,8 +6851,8 @@ local function cherryCreateESP(p)
     local r={}
     local hl=Instance.new("Highlight")
     hl.FillTransparency=0.55; hl.OutlineTransparency=0
-    hl.FillColor=Color3.fromRGB(0, 220, 255)
-    hl.OutlineColor=Color3.fromRGB(0, 220, 255)
+    hl.FillColor=Color3.fromRGB(230, 235, 245)
+    hl.OutlineColor=Color3.fromRGB(230, 235, 245)
     hl.DepthMode=Enum.HighlightDepthMode.AlwaysOnTop
     hl.Enabled=false; hl.Parent=workspace
     r.Highlight=hl
@@ -6888,13 +6889,13 @@ local function isNearBlack(c, threshold)
 end
 
 local function applyAccentFromTheme()
-    local name = "Cyan"
+    local name = "Grey"
     CherryConfig.Theme = "Cyan"
     M.colorScheme = "Cyan"
     M._savedTheme = "Cyan"
     -- Pure black UI + red accents
-    local accent = Color3.fromRGB(0, 220, 255)
-    local dim = Color3.fromRGB(0, 140, 190)
+    local accent = Color3.fromRGB(230, 235, 245)
+    local dim = Color3.fromRGB(150, 160, 175)
     local bg  = Color3.fromRGB(0, 0, 0)
     local row = Color3.fromRGB(12, 12, 14)
     local btn = Color3.fromRGB(18, 18, 20)
@@ -7013,7 +7014,7 @@ RunService2.Heartbeat:Connect(function()
                 r.Highlight.Enabled=false; r.Billboard.Enabled=false
                 r.Highlight.Adornee=nil; r.Billboard.Adornee=nil
             else
-                local liveAccent = Color3.fromRGB(0, 220, 255)
+                local liveAccent = Color3.fromRGB(230, 235, 245)
                 local showHL = cherryESPState.HighlightESP or cherryESPState.LineESP
                 r.Highlight.Adornee=ch; r.Highlight.Enabled=showHL
                 r.Highlight.OutlineColor=liveAccent
@@ -7059,21 +7060,21 @@ end
 -- ============================================================
 
 -- CHROME.VS COOL GUI - deep ocean glass + cyan glow
-local UI_ACCENT       = Color3.fromRGB(0, 210, 255)
-local UI_ACCENT_DIM   = Color3.fromRGB(0, 140, 190)
-local UI_BG_DARK      = Color3.fromRGB(4, 8, 14)
-local UI_ROW_BG       = Color3.fromRGB(10, 16, 24)
+local UI_ACCENT       = Color3.fromRGB(230, 235, 245)
+local UI_ACCENT_DIM   = Color3.fromRGB(150, 160, 175)
+local UI_BG_DARK      = Color3.fromRGB(12, 13, 16)
+local UI_ROW_BG       = Color3.fromRGB(20, 22, 28)
 local UI_CARD_STROKE  = Color3.fromRGB(30, 50, 70)
 local UI_TEXT_WHITE   = Color3.fromRGB(255, 255, 255)
 local UI_TEXT_PRIMARY = Color3.fromRGB(240, 248, 255)
 local UI_TEXT_DIM     = Color3.fromRGB(140, 170, 190)
-local UI_TEXT_SECTION = Color3.fromRGB(0, 210, 255)
+local UI_TEXT_SECTION = Color3.fromRGB(230, 235, 245)
 local UI_BTN_BG       = Color3.fromRGB(12, 20, 30)
 local UI_TOGGLE_OFF   = Color3.fromRGB(6, 10, 16)
 local UI_TOGGLE_KNOB  = Color3.fromRGB(255, 255, 255)
 local UI_KNOB_ON      = Color3.fromRGB(255, 255, 255)
 local UI_GRAD_TOP     = Color3.fromRGB(12, 20, 32)
-local UI_GRAD_BOT     = Color3.fromRGB(4, 8, 14)
+local UI_GRAD_BOT     = Color3.fromRGB(12, 13, 16)
 
 
 -- Apply saved colour scheme before any UI is built
@@ -7085,7 +7086,7 @@ local UI_TWEEN_MED  = TweenInfo.new(0.35, Enum.EasingStyle.Quint, Enum.EasingDir
 -- UI STYLE HELPERS - ocean glass cards with cyan edge
 local function uiCardStyle(f)
     local c = Instance.new("UICorner"); c.CornerRadius = UDim.new(0, 11); c.Parent = f
-    local s = Instance.new("UIStroke"); s.Thickness = 1.2; s.Color = UI_ACCENT or Color3.fromRGB(0,210,255)
+    local s = Instance.new("UIStroke"); s.Thickness = 1.2; s.Color = UI_ACCENT or Color3.fromRGB(230,235,245)
     s.Transparency = 0.72; s.ApplyStrokeMode = Enum.ApplyStrokeMode.Border; s.Parent = f
     local g = Instance.new("UIGradient"); g.Color = ColorSequence.new({
         ColorSequenceKeypoint.new(0, (UI_ROW_BG or Color3.fromRGB(12,18,28)):Lerp(Color3.fromRGB(18,28,42), 0.4)),
@@ -7138,7 +7139,7 @@ local function uiSectionHeader(parent, text)
     t.Font = Enum.Font.GothamBold
     t.TextSize = 12
     t.TextXAlignment = Enum.TextXAlignment.Left
-    t.TextColor3 = Color3.fromRGB(0, 220, 255)
+    t.TextColor3 = Color3.fromRGB(230, 235, 245)
     t.Text = tostring(text or "")
     t.Parent = f
     return f
@@ -7585,7 +7586,7 @@ local function uiMakeTab(parent, name, text, pos, active)
     b.TextSize=11; b.Font=Enum.Font.GothamBlack; b.AutoButtonColor=false; b.Parent=parent
     Instance.new("UICorner",b).CornerRadius=UDim.new(0,10)
     local stroke = Instance.new("UIStroke"); stroke.Name="TabStroke"
-    stroke.Color = UI_ACCENT or Color3.fromRGB(0,210,255)
+    stroke.Color = UI_ACCENT or Color3.fromRGB(230,235,245)
     stroke.Thickness = active and 1.6 or 1
     stroke.Transparency = active and 0.2 or 0.78
     stroke.ApplyStrokeMode = Enum.ApplyStrokeMode.Border
@@ -7988,13 +7989,13 @@ local PING_C = {
     bg = Color3.fromRGB(0, 0, 0),
     panel = Color3.fromRGB(10, 10, 10),
     card = Color3.fromRGB(18, 18, 18),
-    red1 = Color3.fromRGB(0, 160, 210),
-    red2 = Color3.fromRGB(0, 200, 245),
-    red3 = Color3.fromRGB(0, 230, 255),
+    red1 = Color3.fromRGB(160, 170, 190),
+    red2 = Color3.fromRGB(200, 210, 225),
+    red3 = Color3.fromRGB(240, 245, 255),
     glow = Color3.fromRGB(0, 100, 140),
     white = Color3.fromRGB(255, 255, 255),
     dim = Color3.fromRGB(160, 160, 160),
-    green = Color3.fromRGB(0, 200, 245), -- keep key red (no green accents)
+    green = Color3.fromRGB(200, 210, 225), -- keep key red (no green accents)
     selected = Color3.fromRGB(0, 200, 255),
 }
 local PING_T = { bg = 0.30, card = 0.22, header = 0.10 }
@@ -8311,7 +8312,7 @@ function M.buildGui()
     do
         local stroke = Instance.new("UIStroke")
         stroke.Name = "MainStroke"
-        stroke.Color = Color3.fromRGB(0, 210, 255)
+        stroke.Color = Color3.fromRGB(230, 235, 245)
         stroke.Thickness = 1.8
         stroke.Transparency = 0.35
         stroke.Parent = Frame
@@ -8322,7 +8323,7 @@ function M.buildGui()
         topGlow.Name = "TopGlow"
         topGlow.Size = UDim2.new(1, -24, 0, 2)
         topGlow.Position = UDim2.new(0, 12, 0, 0)
-        topGlow.BackgroundColor3 = Color3.fromRGB(0, 220, 255)
+        topGlow.BackgroundColor3 = Color3.fromRGB(230, 235, 245)
         topGlow.BackgroundTransparency = 0.55
         topGlow.BorderSizePixel = 0
         topGlow.ZIndex = 20
@@ -8381,7 +8382,7 @@ function M.buildGui()
     local Header = Instance.new("Frame")
     Header.Name = "HeaderPanel"
     Header.Size = UDim2.new(1, -SIDE_W, 0, HEADER_H)
-    Header.BackgroundColor3 = Color3.fromRGB(8, 16, 26)
+    Header.BackgroundColor3 = Color3.fromRGB(14, 15, 18)
     Header.BorderSizePixel = 0
     Header.Active = true
     Header.ZIndex = 5
@@ -8389,7 +8390,7 @@ function M.buildGui()
     Instance.new("UICorner", Header).CornerRadius = UDim.new(0, 14)
     do
         local hs = Instance.new("UIStroke")
-        hs.Color = Color3.fromRGB(0, 180, 230)
+        hs.Color = Color3.fromRGB(180, 190, 210)
         hs.Thickness = 1
         hs.Transparency = 0.7
         hs.Parent = Header
@@ -8397,43 +8398,20 @@ function M.buildGui()
     local HeaderFill = Instance.new("Frame")
     HeaderFill.Size = UDim2.new(1, 0, 0, 14)
     HeaderFill.Position = UDim2.new(0, 0, 1, -14)
-    HeaderFill.BackgroundColor3 = Color3.fromRGB(8, 16, 26)
+    HeaderFill.BackgroundColor3 = Color3.fromRGB(14, 15, 18)
     HeaderFill.BorderSizePixel = 0
     HeaderFill.ZIndex = 4
     HeaderFill.Parent = Header
 
-    local logoBadge = Instance.new("Frame")
-    logoBadge.Size = UDim2.new(0, 32, 0, 32)
-    logoBadge.Position = UDim2.new(0, 12, 0.5, -16)
-    logoBadge.BackgroundColor3 = Color3.fromRGB(0, 190, 240)
-    logoBadge.BorderSizePixel = 0
-    logoBadge.ZIndex = 6
-    logoBadge.Parent = Header
-    Instance.new("UICorner", logoBadge).CornerRadius = UDim.new(0, 10)
-    do
-        local ls = Instance.new("UIStroke")
-        ls.Color = Color3.fromRGB(180, 240, 255)
-        ls.Thickness = 1.2
-        ls.Transparency = 0.4
-        ls.Parent = logoBadge
-    end
-    local logoTxt = Instance.new("TextLabel")
-    logoTxt.Size = UDim2.new(1, 0, 1, 0)
-    logoTxt.BackgroundTransparency = 1
-    logoTxt.Text = "W"
-    logoTxt.TextColor3 = Color3.fromRGB(255, 255, 255)
-    logoTxt.Font = Enum.Font.GothamBlack
-    logoTxt.TextSize = 16
-    logoTxt.ZIndex = 7
-    logoTxt.Parent = logoBadge
+    -- logo badge removed (no W)
 
     local titleLbl = Instance.new("TextLabel")
     titleLbl.ZIndex = 6
-    titleLbl.Position = UDim2.new(0, 50, 0, 6)
+    titleLbl.Position = UDim2.new(0, 14, 0, 6)
     titleLbl.Size = UDim2.new(0, 160, 0, 22)
     titleLbl.BackgroundTransparency = 1
     titleLbl.Text = "Chrome.vs"
-    titleLbl.TextColor3 = Color3.fromRGB(240, 240, 248)
+    titleLbl.TextColor3 = Color3.fromRGB(235, 238, 248)
     titleLbl.TextSize = 18
     titleLbl.Font = Enum.Font.GothamBlack
     titleLbl.TextXAlignment = Enum.TextXAlignment.Left
@@ -8441,7 +8419,7 @@ function M.buildGui()
 
     local statsLbl = Instance.new("TextLabel")
     statsLbl.ZIndex = 6
-    statsLbl.Position = UDim2.new(0, 50, 0, 28)
+    statsLbl.Position = UDim2.new(0, 14, 0, 28)
     statsLbl.Size = UDim2.new(0, 180, 0, 14)
     statsLbl.BackgroundTransparency = 1
     statsLbl.Text = "FPS: --  Ping: --ms"
@@ -8460,7 +8438,7 @@ function M.buildGui()
     local MinBtn = Instance.new("TextButton")
     MinBtn.Size = UDim2.new(0, 28, 0, 24)
     MinBtn.Position = UDim2.new(1, -40, 0.5, -12)
-    MinBtn.BackgroundColor3 = Color3.fromRGB(30, 22, 28)
+    MinBtn.BackgroundColor3 = Color3.fromRGB(28, 30, 36)
     MinBtn.BorderSizePixel = 0
     MinBtn.Text = "-"
     MinBtn.TextColor3 = Color3.fromRGB(240, 240, 248)
@@ -8474,7 +8452,7 @@ function M.buildGui()
         TweenService:Create(MinBtn, UI_TWEEN_FAST, {BackgroundColor3 = UI_ACCENT}):Play()
     end)
     MinBtn.MouseButton1Up:Connect(function()
-        TweenService:Create(MinBtn, UI_TWEEN_FAST, {BackgroundColor3 = Color3.fromRGB(30, 22, 28)}):Play()
+        TweenService:Create(MinBtn, UI_TWEEN_FAST, {BackgroundColor3 = Color3.fromRGB(28, 30, 36)}):Play()
     end)
 
     local lockButton = Instance.new("TextButton")
@@ -8541,63 +8519,16 @@ function M.buildGui()
     avatarCircle.Name = "AvatarCircle"
     avatarCircle.Size = UDim2.new(0, 52, 0, 52)
     avatarCircle.Position = UDim2.new(0.5, -26, 0, 4)
-    avatarCircle.BackgroundColor3 = Color3.fromRGB(20, 22, 28)
+    -- solid red circle with CHROME (no player avatar)
+    avatarCircle.BackgroundColor3 = Color3.fromRGB(200, 210, 225)
     avatarCircle.BorderSizePixel = 0
-    avatarCircle.ClipsDescendants = true
     avatarCircle.ZIndex = 8
     avatarCircle.Parent = sideBottom
     Instance.new("UICorner", avatarCircle).CornerRadius = UDim.new(1, 0)
     local avStroke = Instance.new("UIStroke", avatarCircle)
-    avStroke.Color = Color3.fromRGB(230, 235, 245)
+    avStroke.Color = Color3.fromRGB(255, 255, 255)
     avStroke.Thickness = 1.5
     avStroke.Transparency = 0.25
-
-    -- Background image fills the circle
-    local avBg = Instance.new("ImageLabel")
-    avBg.Name = "CircleBgImage"
-    avBg.Size = UDim2.fromScale(1, 1)
-    avBg.BackgroundTransparency = 1
-    avBg.ScaleType = Enum.ScaleType.Crop
-    avBg.ZIndex = 8
-    avBg.Parent = avatarCircle
-    Instance.new("UICorner", avBg).CornerRadius = UDim.new(1, 0)
-    do
-        local img = nil
-        pcall(function()
-            if M.customBgAsset then
-                img = M.customBgAsset
-            elseif type(isfile) == "function" and isfile(M.CUSTOM_BG_FILE) and getcustomasset then
-                img = getcustomasset(M.CUSTOM_BG_FILE)
-                M.customBgAsset = img
-            end
-        end)
-        if not img then
-            -- fallback to configured rbx asset / default bg id
-            local id = tonumber(M.customBgId) or tonumber(M.DEFAULT_BG_ID)
-            if id and id > 0 then
-                img = "rbxassetid://" .. tostring(id)
-            end
-        end
-        if img then
-            avBg.Image = img
-            avBg.ImageTransparency = 0.05
-        else
-            avBg.Image = ""
-            avatarCircle.BackgroundColor3 = Color3.fromRGB(200, 210, 225)
-        end
-        M._sideCircleBg = avBg
-        -- if download finishes later, refresh circle image
-        task.spawn(function()
-            for _ = 1, 20 do
-                if M.customBgAsset and avBg and avBg.Parent then
-                    avBg.Image = M.customBgAsset
-                    avBg.ImageTransparency = 0.05
-                    break
-                end
-                task.wait(0.25)
-            end
-        end)
-    end
 
     local avatarLbl = Instance.new("TextLabel")
     avatarLbl.Name = "AvatarChrome"
@@ -8606,9 +8537,7 @@ function M.buildGui()
     avatarLbl.Text = "C.VS"
     avatarLbl.TextColor3 = Color3.fromRGB(255, 255, 255)
     avatarLbl.Font = Enum.Font.GothamBlack
-    avatarLbl.TextSize = 11
-    avatarLbl.TextStrokeTransparency = 0.4
-    avatarLbl.TextStrokeColor3 = Color3.fromRGB(0, 0, 0)
+    avatarLbl.TextSize = 12
     avatarLbl.ZIndex = 9
     avatarLbl.Parent = avatarCircle
 
@@ -8633,7 +8562,7 @@ function M.buildGui()
     masterScroll.Position = UDim2.new(0, 8, 0, HEADER_H + 6)
     masterScroll.Size = UDim2.new(1, -(SIDE_W + 14), 1, -(HEADER_H + 14))
     masterScroll.ScrollBarThickness = 3
-    masterScroll.ScrollBarImageColor3 = UI_ACCENT or Color3.fromRGB(0, 220, 255)
+    masterScroll.ScrollBarImageColor3 = UI_ACCENT or Color3.fromRGB(230, 235, 245)
     masterScroll.ScrollBarImageTransparency = 0.4
     masterScroll.CanvasSize = UDim2.new(0, 0, 0, 0)
     masterScroll.AutomaticCanvasSize = Enum.AutomaticSize.Y
@@ -8711,7 +8640,7 @@ function M.buildGui()
         end
         for k, btn in pairs(tabButtons) do
             local on = (k == name)
-            btn.BackgroundColor3 = on and (UI_ACCENT or Color3.fromRGB(0, 220, 255)) or Color3.fromRGB(28, 28, 34)
+            btn.BackgroundColor3 = on and (UI_ACCENT or Color3.fromRGB(230, 235, 245)) or Color3.fromRGB(28, 28, 34)
             btn.TextColor3 = Color3.fromRGB(255, 255, 255)
             local st = btn:FindFirstChildOfClass("UIStroke")
             if st then st.Transparency = on and 0.2 or 0.6 end
@@ -8737,7 +8666,7 @@ function M.buildGui()
         btn.Parent = tabList
         Instance.new("UICorner", btn).CornerRadius = UDim.new(0, 8)
         local st = Instance.new("UIStroke", btn)
-        st.Color = UI_ACCENT or Color3.fromRGB(0, 220, 255)
+        st.Color = UI_ACCENT or Color3.fromRGB(230, 235, 245)
         st.Thickness = 1
         st.Transparency = 0.6
         btn.MouseButton1Click:Connect(function() selectTab(name) end)
@@ -9904,7 +9833,7 @@ if M.setCircleBtnsVisual then M.setCircleBtnsVisual(M.circleButtonsEnabled) end
 end
 
 function M.applyStealBarTheme(accentColor)
-    local red = Color3.fromRGB(0, 220, 255)
+    local red = Color3.fromRGB(230, 235, 245)
     if M.statusFill then
         M.statusFill.BackgroundColor3 = red
         local grad = M.statusFill:FindFirstChild("FillColorGrad")
@@ -9912,7 +9841,7 @@ function M.applyStealBarTheme(accentColor)
             grad.Color = ColorSequence.new({
                 ColorSequenceKeypoint.new(0, Color3.fromRGB(80, 240, 255)),
                 ColorSequenceKeypoint.new(0.5, red),
-                ColorSequenceKeypoint.new(1, Color3.fromRGB(0, 120, 160)),
+                ColorSequenceKeypoint.new(1, Color3.fromRGB(130, 140, 155)),
             })
         end
     end
@@ -10101,12 +10030,12 @@ M.updateStatusRadius()
 M.startHeadSpeedUpdates()
 
 if player.Character then
-    M.setupHeadIndicator(player.Character)
+    -- M.setupHeadIndicator(player.Character) disabled
     M.setupRagdollTriggers()
 end
 player.CharacterAdded:Connect(function(char)
     task.wait(0.5)
-    M.setupHeadIndicator(char)
+    -- M.setupHeadIndicator(char) disabled
     if M.hardHitEnabled then task.defer(function() M.hideHardHitRing(); M.showHardHitRing() end) end
     M.setupRagdollTriggers()
     if M.medusaCounterEnabled then M.setupMedusa(char) end
@@ -10632,7 +10561,7 @@ function M.playIntro()
     introTitle.ZIndex = 20
     introTitle.Parent = background
     local titleStroke = Instance.new("UIStroke")
-    titleStroke.Color = Color3.fromRGB(0, 210, 255)
+    titleStroke.Color = Color3.fromRGB(230, 235, 245)
     titleStroke.Thickness = 2.5
     titleStroke.Transparency = 1
     titleStroke.Parent = introTitle
